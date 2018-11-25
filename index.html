@@ -46,12 +46,12 @@
             <tr>
                 <td>
                     <div>
-                        <label>Enter code here</label>
+                        <label>Enter function delcaration here</label>
                     </div>
                 </td>
                 <td>
                     <div>
-                        <label>Parsed code here</label>
+                        <label>Parsed function here</label>
                     </div>
                 </td>
             </tr>
@@ -70,23 +70,45 @@
             <tr>
                 <td>
                     <div>
-                        <button id="codeSubmissionButton">Parse code</button>
+                        <button id="codeSubmissionButton">Parse function</button>
                     </div>
                 </td>
                 <td>
                 </td>
             </tr>
-        </table>
-        <table id='elementsTable'>
             <tr>
-                <th>Line</th>
-                <th>Type</th>
-                <th>Name</th>
-                <th>Condition</th>
-                <th>Value</th>
+                <td>
+                    <div>
+                        <label>Enter function call here</label>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <label>Colored function here</label>
+                    </div>
+                </td>
             </tr>
-            
-            
+            <tr>
+                <td>
+                    <div class="textAreaWrapper">
+                        <textarea id="codePlaceholder" title="Enter function call here"></textarea>
+                    </div>
+                </td>
+                <td>
+                    <div class="textAreaWrapper">
+                        <textarea id="parsedCode" title="Colored function here"></textarea>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <button id="codeSubmissionButton">Color function</button>
+                    </div>
+                </td>
+                <td>
+                </td>
+            </tr>
         </table>
 
         <script src="dist/bundle.js"></script>
