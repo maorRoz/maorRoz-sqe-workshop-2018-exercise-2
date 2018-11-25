@@ -1,0 +1,35 @@
+{
+  "name": "sqhw1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack --watch",
+    "test:watch": "mocha-webpack --watch",
+    "test": "mocha-webpack --webpack-config webpack.test.config.js --reporter=json",
+    "coverage": "cross-env NODE_ENV=coverage nyc --reporter=json-summary npm run test",
+    "lint": "eslint -f json -o ./lint/eslint-report.json src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maorRoz/sqhw1.git"
+  },
+  "author": "Maor Rozevich",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/maorRoz/sqhw1/issues"
+  },
+  "homepage": "https://github.com/maorRoz/sqhw1#readme",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "cross-env": "^5.2.0",
+    "eslint": "^5.0.1",
+    "istanbul-instrumenter-loader": "^3.0.1",
+    "jquery": "^3.3.1",
+    "mocha": "^5.2.0",
+    "mocha-webpack": "^2.0.0-beta.0",
+    "nyc": "^13.1.0",
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.1"
+  }
+}
