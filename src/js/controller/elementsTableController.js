@@ -7,9 +7,9 @@ import WhileLine from '../model/WhileLine';
 import IfLine from '../model/IfLine';
 import ElseIfLine from '../model/ElseIfLine';
 import ElseLine from '../model/ElseLine';
-import ForLine from '../model/ForLine';
 
 let ElementsTableModel;
+let ParameterTableModel;
 
 const returnStatementTabler = (returnStatement) => {
     const returnLine = new ReturnLine(returnStatement);
@@ -26,12 +26,6 @@ const whileStatementTabler = (whileStatement) => {
     const whileLine = new WhileLine(whileStatement);
     ElementsTableModel.addRow(whileLine);
     expressionBodyTabler(whileStatement.body);
-};
-
-const forStatementTabler = (forStatement) => {
-    const forLine = new ForLine(forStatement);
-    ElementsTableModel.addRow(forLine);
-    expressionBodyTabler(forStatement.body);
 };
 
 const alternateTabler = (alternate) => {
@@ -62,7 +56,7 @@ const variableDeclaratorTabler = (declarationsContainer) => {
 };
 
 const functionParamTabler = (param) => {
-    ElementsTableModel.addRow(new VariableLine(param));
+    ParameterTableModel.addRow(new VariableLine(param));
 };
 
 const functionTabler = (functionObject) => {
@@ -88,7 +82,6 @@ const tableTypesMethods = {
     VariableDeclaration: variableDeclaratorTabler,
     ExpressionStatement: expressionStatementTabler,
     WhileStatement: whileStatementTabler,
-    ForStatement: forStatementTabler,
     IfStatement: ifStatementTabler,
     ReturnStatement: returnStatementTabler
 };
@@ -100,20 +93,12 @@ const lineTabler = (object) =>
     methodType ? methodType.call(null,object) : null;
 };
 
-const bodyTabler = (parsedCodeBody) => {
-    for(let i = 0 ; i < parsedCodeBody.length ; i++){
-        lineTabler(parsedCodeBody[i]);
-    }
-};
+const bodyTabler = (parsedCodeBody) => parsedCodeBody.length > 0 ? lineTabler(parsedCodeBody[0]) : null
 
-export const createElementTable = (parsedCode) => {
+export const createMethodAndArguments = (parsedCode) => {
     const { body } = parsedCode;
     ElementsTableModel = new ElementsTable();
+    ParameterTableModel = new ParameterTable();
     bodyTabler(body);
-    return ElementsTableModel;
-};
-
-export const implementElementTableUI = (ui) => {
-    ui.clean();
-    ui.createTable(ElementsTableModel);
+    return { Method: ElementsTableModel, Arguments: ParameterTableModel };
 };

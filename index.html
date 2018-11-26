@@ -11,7 +11,11 @@
             }
             .textAreaWrapper {
                 width: 100%;
-                height: 80vh;
+                height: 40vh;
+            }
+            .textAreaArguments {
+                width: 100%;
+                height: 2vh;
             }
             textarea {
                 width: 80%;
@@ -46,7 +50,7 @@
             <tr>
                 <td>
                     <div>
-                        <label>Enter function call here</label>
+                        <label>Enter function declaration here</label>
                     </div>
                 </td>
                 <td>
@@ -58,14 +62,29 @@
             <tr>
                 <td>
                     <div class="textAreaWrapper">
-                        <textarea id="codePlaceholder" title="Enter code here"></textarea>
+                        <textarea id="codePlaceholder" title="Enter function declaration here"></textarea>
                     </div>
                 </td>
                 <td>
                     <div class="textAreaWrapper">
-                        <textarea id="parsedCode" title="Parse code here"></textarea>
+                        <textarea id="parsedCode" title="Parse function here"></textarea>
                     </div>
                 </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label>Enter function arguments here</label>
+                    </div>
+                </td>
+                <tr>
+                    <td>
+                        <div class="textAreaArguments">
+                            <textarea id="argumentsLine" title="Enter function arguments here<"></textarea>
+                        </div>
+                    </td>
+                    <td></td>
+                </tr>
             </tr>
             <tr>
                 <td>
