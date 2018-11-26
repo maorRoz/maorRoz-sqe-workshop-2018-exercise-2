@@ -7,8 +7,7 @@ $(document).ready(function () {
     $('#codeSubmissionButton').click(() => {
         const codeToParse = $('#codePlaceholder').val();
         const parsedCode = parseCode(codeToParse);
-        //$('#parsedCode').val(JSON.stringify(parsedCode, null, 2));
-        const { method, arguments } = createMethodAndArguments(parseCode);
+        const { method, arguments } = createMethodAndArguments(parsedCode);
         const parsedMethod = symbolicSubstitution(method);
         const evalParsedMethod = toEvalParsedMethod(parsedMethod, arguments);
         colorMethod(evalParsedMethod);
