@@ -1,5 +1,6 @@
 import FunctionLine from '../model/FunctionLine';
 import ElementsTable from '../model/ElementsTable';
+import ParameterTable from '../model/ParameterTable';
 import AssignmentLine from '../model/AssignmentLine';
 import ReturnLine from '../model/ReturnLine';
 import VariableLine from '../model/VariableLine';
@@ -100,5 +101,5 @@ export const createMethodAndArguments = (parsedCode) => {
     ElementsTableModel = new ElementsTable();
     ParameterTableModel = new ParameterTable();
     bodyTabler(body);
-    return { Method: ElementsTableModel, Arguments: ParameterTableModel };
+    return { method: ElementsTableModel, arguments: ParameterTableModel };
 };
