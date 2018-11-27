@@ -1,9 +1,7 @@
 import FunctionLine from '../model/FunctionLine';
 import ParameterTable from '../model/ParameterTable';
-import LocalTable from '../model/LocalTable';
 import AssignmentLine from '../model/AssignmentLine';
 import ReturnLine from '../model/ReturnLine';
-import VariableLine from '../model/VariableLine';
 import WhileLine from '../model/WhileLine';
 import IfLine from '../model/IfLine';
 import ElseIfLine from '../model/ElseIfLine';
@@ -11,7 +9,6 @@ import ElseLine from '../model/ElseLine';
 
 let functionTableModel;
 let ParameterTableModel;
-let localTableModel;
 
 const returnStatementTabler = (returnStatement) => {
     const returnLine = new ReturnLine(returnStatement);
@@ -21,7 +18,7 @@ const returnStatementTabler = (returnStatement) => {
 const expressionStatementTabler = (expressionStatement) => {
     const { expression } = expressionStatement;
     const assignmentLine = new AssignmentLine(expression);
-    localTableModel.addAssignment(assignmentLine);
+    return assignmentLine;
 };
 
 const whileStatementTabler = (whileStatement) => {
@@ -51,11 +48,8 @@ const ifStatementTabler = (ifStatement, isElse = false) => {
 
 const variableDeclaratorTabler = (declarationsContainer) => {
     const { declarations } = declarationsContainer;
-    for(let i = 0; i < declarations.length; i++){
-        const variableLine = new VariableLine(declarations[i].id, declarations[i].init);
-        localTableModel.addVariable(variableLine);
-        
-    }
+    const assignments = declarations.map(declaration => new AssignmentLine({ left: declaration.id,  right: declarations.init}));
+    return assignments;
 };
 
 const functionParametersTabler = (parameter) => {
@@ -72,12 +66,14 @@ const functionTabler = (functionObject) => {
 const expressionBodyTabler = (objectStatements) => {
     const { type, body } = objectStatements;
     if(type !== 'BlockStatement'){
-        return [ elementTabler(objectStatements) ];
+        const newElement = elementTabler(objectStatements);
+        return newElement.length? newElement : [ newElement ];
     }
 
     const elementsBody = [];
     for(let i = 0; i < body.length; i++){
-        elementsBody.push(elementTabler(body[i]));
+        const newElement = elementTabler(body[i]);
+        newElement.length ? newElement.forEach(element => elementsBody.push(element)) : elementTabler(newElement);
     }
     return elementsBody.filter((element) => element != null && element!= undefined);
 };
@@ -103,7 +99,6 @@ const bodyTabler = (parsedCodeBody) => parsedCodeBody.length > 0 ? elementTabler
 export const createMethodAndArguments = (parsedCode) => {
     const { body } = parsedCode;
     ParameterTableModel = new ParameterTable();
-    localTableModel = new LocalTable();
     bodyTabler(body);
-    return { method: functionTableModel, parameters: ParameterTableModel, locals: localTableModel };
+    return { method: functionTableModel, parameters: ParameterTableModel };
 };

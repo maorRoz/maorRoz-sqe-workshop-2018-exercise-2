@@ -5,15 +5,20 @@ import { symbolicSubstitution } from './controller/symbolicSubstituter';
 import toEvalParsedMethod from './controller/evaluator';
 import  createOutputFunction from '../view';
 
+const argumentsTextIntoValues = () => {
+    const argumentsText = $('#argumentsLine').val().split(',');
+    return argumentsText.forEach(argument => JSON.parse(argument));
+}
+
 $(document).ready(function () {
     $('#codeSubmissionButton').click(() => {
         const codeToParse = $('#codePlaceholder').val();
         const parsedCode = parseCode(codeToParse);
         const tables = createMethodAndArguments(parsedCode);
-        global.parametersTable = tables.parameters;
-        global.locals = tables.locals;
+        global.parametersTable = tables.parameters; //to delete
+        global.unsubtitutedMethod = tables.method; // to delete
         global.subtitutedMethod = symbolicSubstitution(tables);
-        const argumentsValues = $('#argumentsLine').val().split(',')
+        const argumentsValues = argumentsTextIntoValues();
         toEvalParsedMethod(argumentsValues);
        $('#parsedCode #codeLine' ).remove();
         createOutputFunction(global.subtitutedMethod, tables.parameters, $('#parsedCode'));
