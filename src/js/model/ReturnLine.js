@@ -6,7 +6,7 @@ const type = 'return statement';
 export default class ReturnLine extends Line{
     constructor(statement){
         const { argument } = statement;
-        super(argument.loc, type);
+        super(type);
         this.lineValue = extractValue(argument);
     }
 }

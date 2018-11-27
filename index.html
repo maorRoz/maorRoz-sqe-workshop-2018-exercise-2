@@ -27,9 +27,14 @@
                 width: 100%;
             }
 
+
             #elementsTable td, #elementsTable th {
                 border: 1px solid #ddd;
                 padding: 8px;
+            }
+
+            #codeLine {
+                display: block;
             }
 
             #elementsTable tr:nth-child(even){background-color: #f2f2f2;}
@@ -67,7 +72,7 @@
                 </td>
                 <td>
                     <div class="textAreaWrapper">
-                        <textarea id="parsedCode" title="Parse function here"></textarea>
+                        <code id="parsedCode" title="Parse function here"></code>
                     </div>
                 </td>
             </tr>
@@ -80,7 +85,7 @@
                 <tr>
                     <td>
                         <div class="textAreaArguments">
-                            <textarea id="argumentsLine" title="Enter function arguments here<"></textarea>
+                            <textarea id="argumentsLine" title="Enter function arguments here"></textarea>
                         </div>
                     </td>
                     <td></td>

@@ -3,7 +3,7 @@ export default class ParametersTable{
         this.parameters = [];
     }
     
-    addRow(parameter){
+    addParameter(parameter){
         this.parameters.push(parameter);
     }
 }

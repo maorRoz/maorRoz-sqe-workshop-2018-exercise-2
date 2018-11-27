@@ -1,6 +1,6 @@
 import FunctionLine from '../model/FunctionLine';
-import ElementsTable from '../model/ElementsTable';
 import ParameterTable from '../model/ParameterTable';
+import LocalTable from '../model/LocalTable';
 import AssignmentLine from '../model/AssignmentLine';
 import ReturnLine from '../model/ReturnLine';
 import VariableLine from '../model/VariableLine';
@@ -9,73 +9,77 @@ import IfLine from '../model/IfLine';
 import ElseIfLine from '../model/ElseIfLine';
 import ElseLine from '../model/ElseLine';
 
-let ElementsTableModel;
+let functionTableModel;
 let ParameterTableModel;
+let localTableModel;
 
 const returnStatementTabler = (returnStatement) => {
     const returnLine = new ReturnLine(returnStatement);
-    ElementsTableModel.addRow(returnLine);
+    return returnLine;
 };
 
 const expressionStatementTabler = (expressionStatement) => {
     const { expression } = expressionStatement;
     const assignmentLine = new AssignmentLine(expression);
-    ElementsTableModel.addRow(assignmentLine);
+    localTableModel.addAssignment(assignmentLine);
 };
 
 const whileStatementTabler = (whileStatement) => {
-    const whileLine = new WhileLine(whileStatement);
-    ElementsTableModel.addRow(whileLine);
-    expressionBodyTabler(whileStatement.body);
-};
+    const whileBody = expressionBodyTabler(whileStatement.body);
+    const whileLine = new WhileLine(whileStatement, whileBody);
+    return whileLine;
+}
 
 const alternateTabler = (alternate) => {
-    if(!alternate) return;
+    if(!alternate) return null;
     const { type } = alternate;
     if(type === 'IfStatement'){
         return ifStatementTabler(alternate, true);
     }
-    const elseLine = new ElseLine(alternate);
-    ElementsTableModel.addRow(elseLine);
-    expressionBodyTabler(alternate);
+    const alternateBody = expressionBodyTabler(alternate);
+    const elseLine = new ElseLine(alternateBody);
+    return elseLine;
 };
 
 const ifStatementTabler = (ifStatement, isElse = false) => {
-    const ifLine = isElse ? new ElseIfLine(ifStatement) : new IfLine(ifStatement);
-    ElementsTableModel.addRow(ifLine);
     const { alternate, consequent} = ifStatement;
-    expressionBodyTabler(consequent);
-    alternateTabler(alternate);
+    const ifBody = expressionBodyTabler(consequent);
+    const ifAlternate =  alternateTabler(alternate);
+    const ifLine = isElse ? new ElseIfLine(ifStatement, ifBody, ifAlternate) : new IfLine(ifStatement, ifBody, ifAlternate);
+    return ifLine;
 };
 
 const variableDeclaratorTabler = (declarationsContainer) => {
     const { declarations } = declarationsContainer;
     for(let i = 0; i < declarations.length; i++){
         const variableLine = new VariableLine(declarations[i].id, declarations[i].init);
-        ElementsTableModel.addRow(variableLine);
+        localTableModel.addVariable(variableLine);
+        
     }
 };
 
-const functionParamTabler = (param) => {
-    ParameterTableModel.addRow(new VariableLine(param));
+const functionParametersTabler = (parameter) => {
+    ParameterTableModel.addParameter(new VariableLine(parameter));
 };
 
 const functionTabler = (functionObject) => {
-    const functionLine = new FunctionLine(functionObject);
-    ElementsTableModel.addRow(functionLine);
     const { params, body } = functionObject;
-    params.forEach(param => functionParamTabler(param));
-    expressionBodyTabler(body);
+    params.forEach(param => functionParametersTabler(param));
+    const functionBody = expressionBodyTabler(body);
+    functionTableModel = new FunctionLine(functionObject, functionBody);
 };
 
 const expressionBodyTabler = (objectStatements) => {
     const { type, body } = objectStatements;
     if(type !== 'BlockStatement'){
-        return lineTabler(objectStatements);
+        return [ elementTabler(objectStatements) ];
     }
+
+    const elementsBody = [];
     for(let i = 0; i < body.length; i++){
-        lineTabler(body[i]);
+        elementsBody.push(elementTabler(body[i]));
     }
+    return elementsBody.filter((element) => element != null && element!= undefined);
 };
 
 const tableTypesMethods = {
@@ -87,19 +91,19 @@ const tableTypesMethods = {
     ReturnStatement: returnStatementTabler
 };
 
-const lineTabler = (object) =>
+const elementTabler = (object) =>
 {
     const { type } = object;
     let methodType = tableTypesMethods[type];
-    methodType ? methodType.call(null,object) : null;
+    return methodType ? methodType(object) : null;
 };
 
-const bodyTabler = (parsedCodeBody) => parsedCodeBody.length > 0 ? lineTabler(parsedCodeBody[0]) : null
+const bodyTabler = (parsedCodeBody) => parsedCodeBody.length > 0 ? elementTabler(parsedCodeBody[0]) : null
 
 export const createMethodAndArguments = (parsedCode) => {
     const { body } = parsedCode;
-    ElementsTableModel = new ElementsTable();
     ParameterTableModel = new ParameterTable();
+    localTableModel = new LocalTable();
     bodyTabler(body);
-    return { method: ElementsTableModel, arguments: ParameterTableModel };
+    return { method: functionTableModel, parameters: ParameterTableModel, locals: localTableModel };
 };
