@@ -1,10 +1,10 @@
 import IfLine from './IfLine';
 
-const type = 'else if statement';
+const type = 'elseIfStatement';
 
 export default class ElseIfLine extends IfLine{
-    constructor(statement){
-        super(statement);
+    constructor(statement, body, alternate){
+        super(statement, body, alternate);
         this.lineType = type;
     }
 }

@@ -1,6 +1,6 @@
 import Line from './Line';
 
-const type = 'else statement';
+const type = 'elseStatement';
 
 export default class ElseLine extends Line{
     constructor(body){

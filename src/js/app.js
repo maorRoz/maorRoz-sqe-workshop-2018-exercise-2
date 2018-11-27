@@ -10,10 +10,12 @@ $(document).ready(function () {
         const codeToParse = $('#codePlaceholder').val();
         const parsedCode = parseCode(codeToParse);
         const tables = createMethodAndArguments(parsedCode);
+        global.parametersTable = tables.parameters;
+        global.locals = tables.locals;
         global.subtitutedMethod = symbolicSubstitution(tables);
         const argumentsValues = $('#argumentsLine').val().split(',')
         toEvalParsedMethod(argumentsValues);
        $('#parsedCode #codeLine' ).remove();
-        createOutputFunction(global.subtitutedMethod, $('#parsedCode'));
+        createOutputFunction(global.subtitutedMethod, tables.parameters, $('#parsedCode'));
     });
 });

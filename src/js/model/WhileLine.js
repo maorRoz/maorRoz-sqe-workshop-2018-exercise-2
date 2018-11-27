@@ -1,7 +1,7 @@
 import Line from './Line';
 import { extractValue } from '../valueExtractor';
 
-const type = 'while statement';
+const type = 'whileStatement';
 
 export default class WhileLine extends Line{
     constructor(statement, body){

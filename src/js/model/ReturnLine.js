@@ -1,7 +1,7 @@
 import Line from './Line';
 import { extractValue } from '../valueExtractor';
 
-const type = 'return statement';
+const type = 'returnStatement';
 
 export default class ReturnLine extends Line{
     constructor(statement){

@@ -31,7 +31,7 @@ const whileStatementTabler = (whileStatement) => {
 }
 
 const alternateTabler = (alternate) => {
-    if(!alternate) return null;
+    if(!alternate) return;
     const { type } = alternate;
     if(type === 'IfStatement'){
         return ifStatementTabler(alternate, true);
@@ -59,7 +59,7 @@ const variableDeclaratorTabler = (declarationsContainer) => {
 };
 
 const functionParametersTabler = (parameter) => {
-    ParameterTableModel.addParameter(new VariableLine(parameter));
+    ParameterTableModel.addParameter(parameter.name);
 };
 
 const functionTabler = (functionObject) => {

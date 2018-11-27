@@ -1,29 +1,80 @@
 import $ from 'jquery';
 
-const functionCodeTextToSpan = (functionObject) => {
-    const text = `function ${functionObject.lineName}(){`
-    const span = $('<span />').attr('id', 'codeLine').html(text);
-    return span;
+let outputBox;
+
+
+
+const returnCodeTextToSpan = (retunObject) => {
+    const returnText = `return ${retunObject.lineValue};`;
+    outputBox.append($('<span />').attr('id', 'codeLine').html(returnText));
+}
+
+const codeTextToSpanClosingScope = () => outputBox.append($('<span />').attr('id', 'codeLine').html('}'));
+
+const codeTextToSpanBody = (object) => object.lineBody.forEach(element => codeTextToSpan(element));
+
+const codeTextToSpanTest = (objectPrefix, object) => {
+    const objectText = `${objectPrefix}(${object.lineCondition}){`;
+    outputBox.append($('<span />').attr('id', 'codeLine').html(objectText));
+}
+
+const whileCodeTextToSpan = (whileObject) => {
+    codeTextToSpanTest('while', whileObject);
+
+    codeTextToSpanBody(whileObject);
+
+    codeTextToSpanClosingScope();
+}
+
+const elseCodeTextToSpan = (elseObject) => {
+    const elseText = 'else {';
+    outputBox.append($('<span />').attr('id', 'codeLine').html(elseText));
+
+    codeTextToSpanBody(elseObject);
+
+    codeTextToSpanClosingScope();
+}
+
+const elseIfCodeTextToSpan = (elseIfObject) => ifCodeTextToSpan(elseIfObject, true);
+
+const ifCodeTextToSpan = (ifObject, isElse = false) => {
+    codeTextToSpanTest(isElse? 'else if' : 'if', ifObject);
+
+    codeTextToSpanBody(ifObject);
+
+    const { alternate } = ifObject;
+    codeTextToSpan(alternate);
+
+    codeTextToSpanClosingScope();
 }
 
 const typeCodeTextToSpan = {
+    ifStatement: ifCodeTextToSpan,
+    elseIfStatement: elseIfCodeTextToSpan,
+    elseStatement: elseCodeTextToSpan,
+    whileStatement: whileCodeTextToSpan,
+    returnStatement: returnCodeTextToSpan
 }
 
-const codeTextToSpan = (element) => {
+const codeTextToSpan = (element = {}) => {
     const methodCodeTextToSpan = typeCodeTextToSpan[element.lineType] || (() => null);
     methodCodeTextToSpan(element);
 }
 
-const createFunctionBodySpans = (functionBody) =>{
-    functionBody.forEach(element=> codeTextToSpan(element));
+const createFunctionSpans = (functionObject, ParameterTableModel) =>{
+    const parametersText = ParameterTableModel.parameters.join();
+    const functionText = `function ${functionObject.lineName}(${parametersText}){`
+    outputBox.append($('<span />').attr('id', 'codeLine').html(functionText));
+
+    codeTextToSpanBody(functionObject);
+
+    codeTextToSpanClosingScope();
 }
 
 
-const createOutputFunction = (method, outputBox ) => {
-    const functionSpan = functionCodeTextToSpan(method)
-    outputBox.append(functionSpan);
-    createFunctionBodySpans(method.lineBody);
-    outputBox.append($('<span />').attr('id', 'codeLine').html('}'));
+const createOutputFunction = (functionObject, ParameterTableModel, givenOutputBox ) => {
+    outputBox = givenOutputBox;
+    createFunctionSpans(functionObject, ParameterTableModel);
 }
 
 export default createOutputFunction;
