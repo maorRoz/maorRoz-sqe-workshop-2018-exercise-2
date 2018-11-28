@@ -73,7 +73,7 @@ const expressionBodyTabler = (objectStatements) => {
     const elementsBody = [];
     for(let i = 0; i < body.length; i++){
         const newElement = elementTabler(body[i]);
-        newElement.length ? newElement.forEach(element => elementsBody.push(element)) : elementTabler(newElement);
+        newElement.length ? newElement.forEach(element => elementsBody.push(element)) : elementsBody.push(newElement);
     }
     return elementsBody.filter((element) => element != null && element!= undefined);
 };
