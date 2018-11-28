@@ -18,7 +18,7 @@ $(document).ready(function () {
         global.subtitutedMethod = symbolicSubstitution(method);
         const argumentsValues = argumentsTextIntoValues();
         toEvalParsedMethod(argumentsValues);
-       $('#parsedCode #codeLine' ).remove();
-        createOutputFunction(global.subtitutedMethod, $('#parsedCode'));
+        $('#parsedCode #codeLine' ).remove();
+        createOutputFunction($('#parsedCode'));
     });
 });

@@ -83,24 +83,24 @@ const codeTextToSpan = (element = {}, identationLevel) => {
     methodCodeTextToSpan(element, identationLevel);
 }
 
-const createFunctionSpans = (functionObject) =>{
-    const parametersText = functionObject.parameters.join();
+const createFunctionSpans = () =>{
+    const parametersText = global.subtitutedMethod.parameters.join();
 
-    const functionText = `function ${functionObject.lineName}(${parametersText}){`
+    const functionText = `function ${global.subtitutedMethod.lineName}(${parametersText}){`
     const newSpan = $("<span id='codeLine'/>");
     newSpan.text(functionText);
     outputBox.append(newSpan);
 
     const identationLevel = 1;
-    codeTextToSpanBody(functionObject, identationLevel);
+    codeTextToSpanBody(global.subtitutedMethod, identationLevel);
 
     codeTextToSpanClosingScope();
 }
 
 
-const createOutputFunction = (functionObject, givenOutputBox ) => {
+const createOutputFunction = (givenOutputBox ) => {
     outputBox = givenOutputBox;
-    createFunctionSpans(functionObject);
+    createFunctionSpans();
 }
 
 export default createOutputFunction;
