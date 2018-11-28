@@ -32,6 +32,8 @@ const codeTextToSpanTest = (objectPrefix, object, identationLevel) => {
     const objectText = `${objectPrefix}(${object.lineCondition}){`;
     const newSpan = $("<span id='codeLine'/>");
     newSpan.css("margin-left",  `${identationLevel * 10}px`);
+    const testColor = object.conditionColor === 'green' ? '#7FFF00' : '#DC143C';
+    newSpan.css('background-color', testColor);
     newSpan.text(objectText);
     outputBox.append(newSpan);
 }
@@ -48,6 +50,8 @@ const elseCodeTextToSpan = (elseObject, identationLevel) => {
     const elseText = 'else {';
     const newSpan = $("<span id='codeLine'/>");
     newSpan.css("margin-left",  `${identationLevel * 10}px`);
+    const testColor = elseObject.conditionColor === 'green' ? '#7FFF00' : '#DC143C';
+    newSpan.css('background-color', testColor);
     newSpan.text(elseText);
     outputBox.append(newSpan);
 
