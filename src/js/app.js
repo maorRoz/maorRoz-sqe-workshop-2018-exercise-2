@@ -7,7 +7,7 @@ import  createOutputFunction from '../view';
 
 const argumentsTextIntoValues = () => {
     const argumentsText = $('#argumentsLine').val().split(',');
-    return argumentsText.forEach(argument => JSON.parse(argument));
+    return argumentsText.map(argument => argument.length > 0 ?  JSON.parse(argument) : '');
 }
 
 $(document).ready(function () {
