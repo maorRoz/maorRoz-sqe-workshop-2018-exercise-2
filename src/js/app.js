@@ -14,12 +14,11 @@ $(document).ready(function () {
     $('#codeSubmissionButton').click(() => {
         const codeToParse = $('#codePlaceholder').val();
         const parsedCode = parseCode(codeToParse);
-        const tables = createMethodAndArguments(parsedCode);
-        global.parametersTable = tables.parameters; //to delete
-        global.subtitutedMethod = symbolicSubstitution(tables);
+        const method = createMethodAndArguments(parsedCode);
+        global.subtitutedMethod = symbolicSubstitution(method);
         const argumentsValues = argumentsTextIntoValues();
         toEvalParsedMethod(argumentsValues);
        $('#parsedCode #codeLine' ).remove();
-        createOutputFunction(global.subtitutedMethod, tables.parameters, $('#parsedCode'));
+        createOutputFunction(global.subtitutedMethod, $('#parsedCode'));
     });
 });

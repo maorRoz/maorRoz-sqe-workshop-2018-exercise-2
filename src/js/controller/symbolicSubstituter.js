@@ -89,9 +89,9 @@ const handleBody = (body, locals) => {
 
 }
 
-export const symbolicSubstitution = ({ method, parameters }) => {
+export const symbolicSubstitution = (method) => {
     const locals = [];
-    globals = parameters.parameters;
+    globals = method.parameters;
     method.lineBody =  handleBody(method.lineBody, locals);
     return method;
 };

@@ -83,8 +83,8 @@ const codeTextToSpan = (element = {}, identationLevel) => {
     methodCodeTextToSpan(element, identationLevel);
 }
 
-const createFunctionSpans = (functionObject, ParameterTableModel) =>{
-    const parametersText = ParameterTableModel.parameters.join();
+const createFunctionSpans = (functionObject) =>{
+    const parametersText = functionObject.parameters.join();
 
     const functionText = `function ${functionObject.lineName}(${parametersText}){`
     const newSpan = $("<span id='codeLine'/>");
@@ -98,9 +98,9 @@ const createFunctionSpans = (functionObject, ParameterTableModel) =>{
 }
 
 
-const createOutputFunction = (functionObject, ParameterTableModel, givenOutputBox ) => {
+const createOutputFunction = (functionObject, givenOutputBox ) => {
     outputBox = givenOutputBox;
-    createFunctionSpans(functionObject, ParameterTableModel);
+    createFunctionSpans(functionObject);
 }
 
 export default createOutputFunction;

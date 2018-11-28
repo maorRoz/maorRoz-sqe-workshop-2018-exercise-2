@@ -1,5 +1,4 @@
 import FunctionLine from '../model/FunctionLine';
-import ParameterTable from '../model/ParameterTable';
 import AssignmentLine from '../model/AssignmentLine';
 import ReturnLine from '../model/ReturnLine';
 import WhileLine from '../model/WhileLine';
@@ -8,7 +7,6 @@ import ElseIfLine from '../model/ElseIfLine';
 import ElseLine from '../model/ElseLine';
 
 let functionTableModel;
-let ParameterTableModel;
 
 const returnStatementTabler = (returnStatement) => {
     const returnLine = new ReturnLine(returnStatement);
@@ -52,15 +50,11 @@ const variableDeclaratorTabler = (declarationsContainer) => {
     return assignments;
 };
 
-const functionParametersTabler = (parameter) => {
-    ParameterTableModel.addParameter(parameter.name);
-};
-
 const functionTabler = (functionObject) => {
     const { params, body } = functionObject;
-    params.forEach(param => functionParametersTabler(param));
+    const parameters  = params.map(param => param.name);
     const functionBody = expressionBodyTabler(body);
-    functionTableModel = new FunctionLine(functionObject, functionBody);
+    functionTableModel = new FunctionLine(functionObject, functionBody, parameters);
 };
 
 const expressionBodyTabler = (objectStatements) => {
@@ -98,7 +92,6 @@ const bodyTabler = (parsedCodeBody) => parsedCodeBody.length > 0 ? elementTabler
 
 export const createMethodAndArguments = (parsedCode) => {
     const { body } = parsedCode;
-    ParameterTableModel = new ParameterTable();
     bodyTabler(body);
-    return { method: functionTableModel, parameters: ParameterTableModel };
+    return functionTableModel;
 };
