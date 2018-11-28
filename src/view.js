@@ -2,55 +2,71 @@ import $ from 'jquery';
 
 let outputBox;
 
-
-
-const returnCodeTextToSpan = (retunObject) => {
+const returnCodeTextToSpan = (retunObject, identationLevel) => {
     const returnText = `return ${retunObject.lineValue};`;
-    outputBox.append($('<span />').attr('id', 'codeLine').html(returnText));
+    const newSpan = $("<span id='codeLine'/>");
+    newSpan.css("margin-left",  `${identationLevel * 10}px`);
+    newSpan.html(returnText);
+    outputBox.append(newSpan);
 }
 
-const assignmentTextToSpan = (assignmentObject) => {
+const assignmentTextToSpan = (assignmentObject, identationLevel) => {
     const assignmentText = `${assignmentObject.lineName} = ${assignmentObject.lineValue};`;
-    outputBox.append($('<span />').attr('id', 'codeLine').html(assignmentText));
+    const newSpan = $("<span id='codeLine'/>");
+    newSpan.css("margin-left",  `${identationLevel * 10}px`);
+    newSpan.html(assignmentText);
+    outputBox.append(newSpan);
 };
 
-const codeTextToSpanClosingScope = () => outputBox.append($('<span />').attr('id', 'codeLine').html('}'));
+const codeTextToSpanClosingScope = (identationLevel = 0) => {
+    const newSpan = $("<span id='codeLine'/>");
+    newSpan.css("margin-left", `${identationLevel * 10}px`);
+    newSpan.html('}');
+    outputBox.append(newSpan);
+}
 
-const codeTextToSpanBody = (object) => object.lineBody.forEach(element => codeTextToSpan(element));
+const codeTextToSpanBody = (object, identationLevel) => object.lineBody
+    .forEach(element => codeTextToSpan(element, identationLevel));
 
-const codeTextToSpanTest = (objectPrefix, object) => {
+const codeTextToSpanTest = (objectPrefix, object, identationLevel) => {
     const objectText = `${objectPrefix}(${object.lineCondition}){`;
-    outputBox.append($('<span />').attr('id', 'codeLine').html(objectText));
+    const newSpan = $("<span id='codeLine'/>");
+    newSpan.css("margin-left",  `${identationLevel * 10}px`);
+    newSpan.html(objectText);
+    outputBox.append(newSpan);
 }
 
-const whileCodeTextToSpan = (whileObject) => {
-    codeTextToSpanTest('while', whileObject);
+const whileCodeTextToSpan = (whileObject, identationLevel) => {
+    codeTextToSpanTest('while', whileObject, identationLevel);
 
-    codeTextToSpanBody(whileObject);
+    codeTextToSpanBody(whileObject, identationLevel + 1);
 
-    codeTextToSpanClosingScope();
+    codeTextToSpanClosingScope(identationLevel);
 }
 
-const elseCodeTextToSpan = (elseObject) => {
+const elseCodeTextToSpan = (elseObject, identationLevel) => {
     const elseText = 'else {';
-    outputBox.append($('<span />').attr('id', 'codeLine').html(elseText));
+    const newSpan = $("<span id='codeLine'/>");
+    newSpan.css("margin-left",  `${identationLevel * 10}px`);
+    newSpan.html(elseText);
+    outputBox.append(newSpan);
 
-    codeTextToSpanBody(elseObject);
+    codeTextToSpanBody(elseObject, identationLevel + 1);
 
-    codeTextToSpanClosingScope();
+    codeTextToSpanClosingScope(identationLevel);
 }
 
-const elseIfCodeTextToSpan = (elseIfObject) => ifCodeTextToSpan(elseIfObject, true);
+const elseIfCodeTextToSpan = (elseIfObject, identationLevel) => ifCodeTextToSpan(elseIfObject, identationLevel, true);
 
-const ifCodeTextToSpan = (ifObject, isElse = false) => {
-    codeTextToSpanTest(isElse? 'else if' : 'if', ifObject);
+const ifCodeTextToSpan = (ifObject, identationLevel, isElse = false) => {
+    codeTextToSpanTest(isElse? 'else if' : 'if', ifObject, identationLevel);
 
-    codeTextToSpanBody(ifObject);
+    codeTextToSpanBody(ifObject, identationLevel + 1);
 
-    codeTextToSpanClosingScope();
+    codeTextToSpanClosingScope(identationLevel);
 
     const { alternate } = ifObject;
-    alternate? codeTextToSpan(alternate): null;
+    alternate? codeTextToSpan(alternate, identationLevel): null;
 }
 
 const typeCodeTextToSpan = {
@@ -62,17 +78,21 @@ const typeCodeTextToSpan = {
     assignmentExpression: assignmentTextToSpan
 }
 
-const codeTextToSpan = (element = {}) => {
+const codeTextToSpan = (element = {}, identationLevel) => {
     const methodCodeTextToSpan = typeCodeTextToSpan[element.lineType] || (() => null);
-    methodCodeTextToSpan(element);
+    methodCodeTextToSpan(element, identationLevel);
 }
 
 const createFunctionSpans = (functionObject, ParameterTableModel) =>{
     const parametersText = ParameterTableModel.parameters.join();
-    const functionText = `function ${functionObject.lineName}(${parametersText}){`
-    outputBox.append($('<span />').attr('id', 'codeLine').html(functionText));
 
-    codeTextToSpanBody(functionObject);
+    const functionText = `function ${functionObject.lineName}(${parametersText}){`
+    const newSpan = $("<span id='codeLine'/>");
+    newSpan.html(functionText);
+    outputBox.append(newSpan);
+
+    const identationLevel = 1;
+    codeTextToSpanBody(functionObject, identationLevel);
 
     codeTextToSpanClosingScope();
 }
