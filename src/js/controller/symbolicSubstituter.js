@@ -4,10 +4,12 @@ let globals;
 const handleElse = (elseStatement, locals) => {
     const { lineBody } = elseStatement;
     elseStatement.lineBody = handleBody(lineBody, locals);
+
+    return elseStatement;
 }
 
 const subtituteExpression = (expression, locals) => {
-    const variables = expression.split(/>|<|!==|==|===|[+-/*]/)
+    const variables = expression.split(/>|<|!==|==|===|[()+-/*]/)
     variables.forEach(variable => {
         const isGlobal = globals.includes(variable);
         const existLocal = isGlobal ? { value: variable } : locals.find(local => local.name === variable);
@@ -47,6 +49,10 @@ const handleWhile = (whileStatement, locals) => {
      return whileStatement;
 }
 
+const handleAlternate = (alternate, locals) => {
+    return alternate.lineType === 'elseStatement' ? handleElse(alternate, locals) : handleIf(alternate, locals);
+}
+
 const handleIf = (ifStatement, locals) => {
     const { lineCondition, lineBody, alternate } = ifStatement;
 
@@ -54,15 +60,13 @@ const handleIf = (ifStatement, locals) => {
     
     ifStatement.lineBody = handleBody(lineBody, locals);
 
-    ifStatement.alternate = alternate? handleBody(alternate): null;
+    ifStatement.alternate = alternate? handleAlternate(alternate, locals): null;
 
     return ifStatement;
 }
 
 const typeCodeToSubtitute = {
     ifStatement: handleIf,
-    elseIfStatement: handleIf,
-    elseStatement: handleElse,
     whileStatement: handleWhile,
     returnStatement: handleReturn
 }

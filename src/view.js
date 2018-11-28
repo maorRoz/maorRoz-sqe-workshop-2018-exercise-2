@@ -47,10 +47,10 @@ const ifCodeTextToSpan = (ifObject, isElse = false) => {
 
     codeTextToSpanBody(ifObject);
 
+    codeTextToSpanClosingScope();
+
     const { alternate } = ifObject;
     alternate? codeTextToSpan(alternate): null;
-
-    codeTextToSpanClosingScope();
 }
 
 const typeCodeTextToSpan = {

@@ -48,7 +48,7 @@ const ifStatementTabler = (ifStatement, isElse = false) => {
 
 const variableDeclaratorTabler = (declarationsContainer) => {
     const { declarations } = declarationsContainer;
-    const assignments = declarations.map(declaration => new AssignmentLine({ left: declaration.id,  right: declarations.init}));
+    const assignments = declarations.map(declaration => new AssignmentLine({ left: declaration.id,  right: declaration.init}));
     return assignments;
 };
 
@@ -67,7 +67,7 @@ const expressionBodyTabler = (objectStatements) => {
     const { type, body } = objectStatements;
     if(type !== 'BlockStatement'){
         const newElement = elementTabler(objectStatements);
-        return newElement.length? newElement : [ newElement ];
+        return newElement.length ? newElement : [ newElement ];
     }
 
     const elementsBody = [];
