@@ -11,9 +11,9 @@ const handleElse = (elseStatement, locals) => {
 const subtituteExpression = (expression, locals) => {
     const variables = expression.split(/>|<|!==|==|===|[()+-/*]/)
     variables.forEach(variable => {
-        const isGlobal = globals.includes(variable);
-        const existLocal = isGlobal ? { value: variable } : locals.find(local => local.name === variable);
-        expression = existLocal ? expression.replace(new RegExp(variable, 'g'), existLocal.value) : expression;
+        const existLocal = locals.find(local => local.name === variable);
+        expression = existLocal ? expression
+            .replace(new RegExp(variable, 'g'), `(${existLocal.value})`) : expression;
     })
 
     return expression;
