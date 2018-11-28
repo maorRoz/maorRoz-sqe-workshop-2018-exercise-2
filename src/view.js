@@ -6,7 +6,7 @@ const returnCodeTextToSpan = (retunObject, identationLevel) => {
     const returnText = `return ${retunObject.lineValue};`;
     const newSpan = $("<span id='codeLine'/>");
     newSpan.css("margin-left",  `${identationLevel * 10}px`);
-    newSpan.html(returnText);
+    newSpan.text(returnText);
     outputBox.append(newSpan);
 }
 
@@ -14,14 +14,14 @@ const assignmentTextToSpan = (assignmentObject, identationLevel) => {
     const assignmentText = `${assignmentObject.lineName} = ${assignmentObject.lineValue};`;
     const newSpan = $("<span id='codeLine'/>");
     newSpan.css("margin-left",  `${identationLevel * 10}px`);
-    newSpan.html(assignmentText);
+    newSpan.text(assignmentText);
     outputBox.append(newSpan);
 };
 
 const codeTextToSpanClosingScope = (identationLevel = 0) => {
     const newSpan = $("<span id='codeLine'/>");
     newSpan.css("margin-left", `${identationLevel * 10}px`);
-    newSpan.html('}');
+    newSpan.text('}');
     outputBox.append(newSpan);
 }
 
@@ -32,7 +32,7 @@ const codeTextToSpanTest = (objectPrefix, object, identationLevel) => {
     const objectText = `${objectPrefix}(${object.lineCondition}){`;
     const newSpan = $("<span id='codeLine'/>");
     newSpan.css("margin-left",  `${identationLevel * 10}px`);
-    newSpan.html(objectText);
+    newSpan.text(objectText);
     outputBox.append(newSpan);
 }
 
@@ -48,7 +48,7 @@ const elseCodeTextToSpan = (elseObject, identationLevel) => {
     const elseText = 'else {';
     const newSpan = $("<span id='codeLine'/>");
     newSpan.css("margin-left",  `${identationLevel * 10}px`);
-    newSpan.html(elseText);
+    newSpan.text(elseText);
     outputBox.append(newSpan);
 
     codeTextToSpanBody(elseObject, identationLevel + 1);
@@ -88,7 +88,7 @@ const createFunctionSpans = (functionObject, ParameterTableModel) =>{
 
     const functionText = `function ${functionObject.lineName}(${parametersText}){`
     const newSpan = $("<span id='codeLine'/>");
-    newSpan.html(functionText);
+    newSpan.text(functionText);
     outputBox.append(newSpan);
 
     const identationLevel = 1;

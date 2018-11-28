@@ -16,7 +16,6 @@ $(document).ready(function () {
         const parsedCode = parseCode(codeToParse);
         const tables = createMethodAndArguments(parsedCode);
         global.parametersTable = tables.parameters; //to delete
-        global.unsubtitutedMethod = tables.method; // to delete
         global.subtitutedMethod = symbolicSubstitution(tables);
         const argumentsValues = argumentsTextIntoValues();
         toEvalParsedMethod(argumentsValues);
