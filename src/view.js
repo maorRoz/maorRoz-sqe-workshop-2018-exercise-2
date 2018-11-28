@@ -9,6 +9,11 @@ const returnCodeTextToSpan = (retunObject) => {
     outputBox.append($('<span />').attr('id', 'codeLine').html(returnText));
 }
 
+const assignmentTextToSpan = (assignmentObject) => {
+    const assignmentText = `${assignmentObject.lineName} = ${assignmentObject.lineValue}`;
+    outputBox.append($('<span />').attr('id', 'codeLine').html(assignmentText));
+};
+
 const codeTextToSpanClosingScope = () => outputBox.append($('<span />').attr('id', 'codeLine').html('}'));
 
 const codeTextToSpanBody = (object) => object.lineBody.forEach(element => codeTextToSpan(element));
@@ -53,7 +58,8 @@ const typeCodeTextToSpan = {
     elseIfStatement: elseIfCodeTextToSpan,
     elseStatement: elseCodeTextToSpan,
     whileStatement: whileCodeTextToSpan,
-    returnStatement: returnCodeTextToSpan
+    returnStatement: returnCodeTextToSpan,
+    assignmenExpression: assignmentTextToSpan
 }
 
 const codeTextToSpan = (element = {}) => {

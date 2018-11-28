@@ -1,7 +1,7 @@
 import Line from './Line';
 import { extractValue } from '../valueExtractor';
 
-const type = 'assignment expression';
+const type = 'assignmentExpression';
 
 export default class AssignmentLine extends Line{
     constructor(expression){
