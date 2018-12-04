@@ -8,27 +8,33 @@ export const makeTestableFunction = (code) => {
 
 const createExpectedObject = (objectProperties) =>
 {
-   const { lineType, lineName='', lineCondition='', lineValue='', lineBody=[] } = objectProperties;
-   return { lineType, lineName, lineCondition, lineValue, lineBody}; 
+   const { lineType, lineName='', lineCondition='', lineValue='', lineBody=[], alternate } = objectProperties;
+   const testObject = { lineType, lineName, lineCondition, lineValue, lineBody};
+   
+    if(lineType === 'ifStatement' || lineType === 'elseIfStatement'){
+        testObject.alternate = alternate;
+    }
+
+    return testObject;
 }
 
-export const createExpectedFunction = (lineName) => 
-    createExpectedObject({ lineType: 'functionDeclaration', lineName });
+export const createExpectedFunction = (lineName, lineBody) => 
+    createExpectedObject({ lineType: 'functionDeclaration', lineName, lineBody });
 
 export const createExpectedReturnStatement = (lineValue) => 
     createExpectedObject({ lineType: 'returnStatement', lineValue });
 
-export const createExpectedIfStatement = (lineCondition) => 
-    createExpectedObject({ lineType: 'ifStatement', lineCondition });
+export const createExpectedIfStatement = (lineCondition, lineBody, alternate) => 
+    createExpectedObject({ lineType: 'ifStatement', lineCondition, lineBody, alternate });
 
-export const createExpectedElseIfStatement = (lineCondition) => 
-    createExpectedObject({ lineType: 'elseIfStatement', lineCondition });
+export const createExpectedElseIfStatement = (lineCondition, lineBody, alternate) => 
+    createExpectedObject({ lineType: 'elseIfStatement', lineCondition, lineBody, alternate });
 
-export const createExpectedElseStatement = () =>  
-    createExpectedObject({ lineType: 'elseStatement' });
+export const createExpectedElseStatement = (lineBody) =>  
+    createExpectedObject({ lineType: 'elseStatement', lineBody });
 
-export const createExpectedWhileStatement = (lineCondition) => 
-    createExpectedObject({ lineType: 'whileStatement', lineCondition });
+export const createExpectedWhileStatement = (lineCondition, lineBody) => 
+    createExpectedObject({ lineType: 'whileStatement', lineCondition, lineBody });
 
 export const createExpectedAssignmentStatement = (lineName,lineValue) => 
     createExpectedObject({ lineType: 'assignmentExpression', lineName, lineValue });

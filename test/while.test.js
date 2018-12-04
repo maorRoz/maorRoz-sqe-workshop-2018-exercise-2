@@ -4,47 +4,64 @@ import {makeTestableFunction, createExpectedWhileStatement, createExpectedReturn
 
 describe('Loop Tests' , () => {
     let functionElements;
+    let testWhile;
 
-    const expectedWhileLine = createExpectedWhileStatement('x===1');
-    const expectedSecondWhile = createExpectedWhileStatement('t===1');
     const expectedReturnY = createExpectedReturnStatement('y');
+    const expectedWhileLine = createExpectedWhileStatement('t===1', [expectedReturnY]);
+    const expectedWrapperWhile = createExpectedWhileStatement('x===1', [expectedWhileLine]);
     describe('While with one line', () => {
         beforeEach(() => {
-            const { lineBody } = makeTestableFunction('function hello(){\nwhile(x === 1)\nreturn y;\n}');
+            const { lineBody } = makeTestableFunction('function hello(){\nwhile(t === 1)\nreturn y;\n}');
             functionElements = lineBody;
+            testWhile = functionElements[0];
         });
-        it('Element Table length', () => {
-            expect(functionElements).to.have.lengthOf(3);
+
+        it('Function body length', () => {
+            expect(functionElements).to.have.lengthOf(1);
         });
-        it('If Line', () => {
-            expect(functionElements[1]).to.deep.equal(expectedWhileLine);
-            expect(functionElements[2]).to.deep.equal(expectedReturnY);
+
+        it('While body length', () => {
+            expect(testWhile.lineBody).to.have.lengthOf(1);
+        });
+
+        it('While', () => {
+            expect(testWhile).to.deep.equal(expectedWhileLine);
         });
     });
     describe('While Body', () => {
         beforeEach(() => {
-            const { lineBody } = makeTestableFunction('function hello(){\nwhile(x === 1){\nreturn y;\n}\n}');
+            const { lineBody } = makeTestableFunction('function hello(){\nwhile(t === 1){\nreturn y;\n}\n}');
             functionElements = lineBody;
+            testWhile = functionElements[0];
         });
-        it('Element Table length', () => {
-            expect(functionElements).to.have.lengthOf(3);
+
+        it('Function body length', () => {
+            expect(functionElements).to.have.lengthOf(1);
         });
-        it('If Line', () => {
-            expect(functionElements[1]).to.deep.equal(expectedWhileLine);
-            expect(functionElements[2]).to.deep.equal(expectedReturnY);
+
+        it('While body length', () => {
+            expect(testWhile.lineBody).to.have.lengthOf(1);
+        });
+
+        it('While', () => {
+            expect(testWhile).to.deep.equal(expectedWhileLine);
         });
     });
     describe('While Inside While', () => {
         beforeEach(() => {
             const { lineBody } = makeTestableFunction('function hello(){\nwhile(x === 1)\nwhile(t === 1)\nreturn y;\n}');
             functionElements = lineBody;
+            testWhile = functionElements[0];
         });
-        it('Element Table length', () => {
-            expect(functionElements).to.have.lengthOf(4);
+        it('Function body length', () => {
+            expect(functionElements).to.have.lengthOf(1);
         });
-        it('If Line', () => {
-            expect(functionElements[1]).to.deep.equal(expectedWhileLine);
-            expect(functionElements[2]).to.deep.equal(expectedSecondWhile);
+
+        it('While body length', () => {
+            expect(testWhile.lineBody).to.have.lengthOf(1);
+        });
+        it('Whiles', () => {
+            expect(testWhile).to.deep.equal(expectedWrapperWhile);
         });
     });
 });

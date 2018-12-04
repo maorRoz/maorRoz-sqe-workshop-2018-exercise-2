@@ -2,7 +2,7 @@
 import { expect } from 'chai';
 import {makeTestableFunction, createExpectedAssignmentStatement } from '../src/js/util-test';
 
-describe('Loop Tests' , () => {
+describe.skip('Loop Tests' , () => {
     let functionElements;
 
     const expectedAssignmentX = createExpectedAssignmentStatement('x','1');
@@ -13,7 +13,7 @@ describe('Loop Tests' , () => {
             const { lineBody } = makeTestableFunction('function hello(){\nx = 1;\n}');
             functionElements = lineBody;
         });
-        it('Element Table length', () => {
+        it('Function body length', () => {
             expect(functionElements).to.have.lengthOf(2);
         });
         it('If Line', () => {
@@ -25,7 +25,7 @@ describe('Loop Tests' , () => {
             const { lineBody } = makeTestableFunction('function hello(){\nx = 1;\ny = x;\n}');
             functionElements = lineBody;
         });
-        it('Element Table length', () => {
+        it('Function body length', () => {
             expect(functionElements).to.have.lengthOf(3);
         });
         it('If Line', () => {
@@ -38,7 +38,7 @@ describe('Loop Tests' , () => {
             const { lineBody } = makeTestableFunction('function hello(){\nx = 1;\nz = x > 2;\n}');
             functionElements = lineBody;
         });
-        it('Element Table length', () => {
+        it('Function body length', () => {
             expect(functionElements).to.have.lengthOf(3);
         });
         it('If Line', () => {
