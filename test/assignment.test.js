@@ -1,50 +1,49 @@
 /* eslint-disable max-lines-per-function */
 import { expect } from 'chai';
-import {makeTestableTable, createExpectedAssignmentStatement } from '../src/js/util-test';
+import {makeTestableFunction, createExpectedAssignmentStatement } from '../src/js/util-test';
 
 describe('Loop Tests' , () => {
-    let testedElementTable;
-    let testedElementRows;
+    let functionElements;
 
-    const expectedAssignmentX = createExpectedAssignmentStatement(2,'x','1');
-    const expectedAssignmentY = createExpectedAssignmentStatement(3,'y','x');
-    const expectedAssignmentZ = createExpectedAssignmentStatement(3,'z','x>2');
+    const expectedAssignmentX = createExpectedAssignmentStatement('x','1');
+    const expectedAssignmentY = createExpectedAssignmentStatement('y','x');
+    const expectedAssignmentZ = createExpectedAssignmentStatement('z','x>2');
     describe('One Assignment', () => {
         beforeEach(() => {
-            testedElementTable = makeTestableTable('function hello(){\nx = 1;\n}');
-            testedElementRows = testedElementTable.elementRows;
+            const { lineBody } = makeTestableFunction('function hello(){\nx = 1;\n}');
+            functionElements = lineBody;
         });
         it('Element Table length', () => {
-            expect(testedElementRows).to.have.lengthOf(2);
+            expect(functionElements).to.have.lengthOf(2);
         });
         it('If Line', () => {
-            expect(testedElementRows[1]).to.deep.equal(expectedAssignmentX);
+            expect(functionElements[1]).to.deep.equal(expectedAssignmentX);
         });
     });
     describe('Two Assignment', () => {
         beforeEach(() => {
-            testedElementTable = makeTestableTable('function hello(){\nx = 1;\ny = x;\n}');
-            testedElementRows = testedElementTable.elementRows;
+            const { lineBody } = makeTestableFunction('function hello(){\nx = 1;\ny = x;\n}');
+            functionElements = lineBody;
         });
         it('Element Table length', () => {
-            expect(testedElementRows).to.have.lengthOf(3);
+            expect(functionElements).to.have.lengthOf(3);
         });
         it('If Line', () => {
-            expect(testedElementRows[1]).to.deep.equal(expectedAssignmentX);
-            expect(testedElementRows[2]).to.deep.equal(expectedAssignmentY);
+            expect(functionElements[1]).to.deep.equal(expectedAssignmentX);
+            expect(functionElements[2]).to.deep.equal(expectedAssignmentY);
         });
     });
     describe('Two assignment, assignment of binary expression', () => {
         beforeEach(() => {
-            testedElementTable = makeTestableTable('function hello(){\nx = 1;\nz = x > 2;\n}');
-            testedElementRows = testedElementTable.elementRows;
+            const { lineBody } = makeTestableFunction('function hello(){\nx = 1;\nz = x > 2;\n}');
+            functionElements = lineBody;
         });
         it('Element Table length', () => {
-            expect(testedElementRows).to.have.lengthOf(3);
+            expect(functionElements).to.have.lengthOf(3);
         });
         it('If Line', () => {
-            expect(testedElementRows[1]).to.deep.equal(expectedAssignmentX);
-            expect(testedElementRows[2]).to.deep.equal(expectedAssignmentZ);
+            expect(functionElements[1]).to.deep.equal(expectedAssignmentX);
+            expect(functionElements[2]).to.deep.equal(expectedAssignmentZ);
         });
     });
 });

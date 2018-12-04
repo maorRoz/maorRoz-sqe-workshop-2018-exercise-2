@@ -1,97 +1,34 @@
-    import { parseCode } from './code-analyzer';
-import { createElementTable } from './controller/elementsTableController';
+import { parseCode } from './code-analyzer';
+import { createMethodAndArguments } from './controller/elementsTableController';
 
-export const makeTestableTable = (code) => {
+export const makeTestableFunction = (code) => {
     const parsedCode = parseCode(code);
-    return createElementTable(parsedCode);
+    return createMethodAndArguments(parsedCode);
 };
 
-export const createExpectedFunction = (lineNum,lineName) => {
-    return {
-        lineNum,
-        lineType: 'function declaration',
-        lineName,
-        lineCondition: '',
-        lineValue: ''
-    };
-};
+const createExpectedObject = (objectProperties) =>
+{
+   const { lineType, lineName='', lineCondition='', lineValue='', lineBody=[] } = objectProperties;
+   return { lineType, lineName, lineCondition, lineValue, lineBody}; 
+}
 
-export const createExpectedVariable = (lineNum,lineName) => {
-    return {
-        lineNum,
-        lineType: 'variable declaration',
-        lineName,
-        lineCondition: '',
-        lineValue: ''
-    };
-};
+export const createExpectedFunction = (lineName) => 
+    createExpectedObject({ lineType: 'functionDeclaration', lineName });
 
-export const createExpectedReturnStatement = (lineNum,lineValue) => {
-    return {
-        lineNum,
-        lineType: 'return statement',
-        lineName: '',
-        lineCondition: '',
-        lineValue
-    };
-};
+export const createExpectedReturnStatement = (lineValue) => 
+    createExpectedObject({ lineType: 'returnStatement', lineValue });
 
-export const createExpectedIfStatement = (lineNum,lineCondition) => {
-    return {
-        lineNum,
-        lineType: 'if statement',
-        lineName: '',
-        lineCondition,
-        lineValue: ''
-    };
-};
+export const createExpectedIfStatement = (lineCondition) => 
+    createExpectedObject({ lineType: 'ifStatement', lineCondition });
 
-export const createExpectedElseIfStatement = (lineNum,lineCondition) => {
-    return {
-        lineNum,
-        lineType: 'else if statement',
-        lineName: '',
-        lineCondition,
-        lineValue: ''
-    };
-};
+export const createExpectedElseIfStatement = (lineCondition) => 
+    createExpectedObject({ lineType: 'elseIfStatement', lineCondition });
 
-export const createExpectedElseStatement = (lineNum) => {
-    return {
-        lineNum,
-        lineType: 'else statement',
-        lineName: '',
-        lineCondition: '',
-        lineValue: ''
-    };
-};
+export const createExpectedElseStatement = () =>  
+    createExpectedObject({ lineType: 'elseStatement' });
 
-export const createExpectedWhileStatement = (lineNum,lineCondition) => {
-    return {
-        lineNum,
-        lineType: 'while statement',
-        lineName: '',
-        lineCondition,
-        lineValue: ''
-    };
-};
+export const createExpectedWhileStatement = (lineCondition) => 
+    createExpectedObject({ lineType: 'whileStatement', lineCondition });
 
-export const createExpectedForStatement = (lineNum,lineCondition) => {
-    return {
-        lineNum,
-        lineType: 'for statement',
-        lineName: '',
-        lineCondition,
-        lineValue: ''
-    };
-};
-
-export const createExpectedAssignmentStatement = (lineNum,lineName,lineValue) => {
-    return {
-        lineNum,
-        lineType: 'assignment expression',
-        lineName,
-        lineCondition: '',
-        lineValue
-    };
-};
+export const createExpectedAssignmentStatement = (lineName,lineValue) => 
+    createExpectedObject({ lineType: 'assignmentExpression', lineName, lineValue });

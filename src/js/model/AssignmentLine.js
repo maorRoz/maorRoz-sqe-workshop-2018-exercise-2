@@ -3,7 +3,7 @@ import { extractValue } from '../valueExtractor';
 
 const type = 'assignmentExpression';
 
-export default class AssignmentLine extends Line{
+export default class AssignmentLine extends Line {
     constructor(expression){
         const { left , right} = expression;
         super(type);
