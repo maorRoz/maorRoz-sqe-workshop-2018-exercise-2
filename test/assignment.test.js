@@ -2,7 +2,7 @@
 import { expect } from 'chai';
 import {makeTestableFunction, createExpectedAssignmentStatement } from '../src/js/util-test';
 
-describe.skip('Loop Tests' , () => {
+describe('Assignment Tests' , () => {
     let functionElements;
 
     const expectedAssignmentX = createExpectedAssignmentStatement('x','1');
@@ -14,10 +14,10 @@ describe.skip('Loop Tests' , () => {
             functionElements = lineBody;
         });
         it('Function body length', () => {
-            expect(functionElements).to.have.lengthOf(2);
+            expect(functionElements).to.have.lengthOf(1);
         });
         it('If Line', () => {
-            expect(functionElements[1]).to.deep.equal(expectedAssignmentX);
+            expect(functionElements[0]).to.deep.equal(expectedAssignmentX);
         });
     });
     describe('Two Assignment', () => {
@@ -26,11 +26,11 @@ describe.skip('Loop Tests' , () => {
             functionElements = lineBody;
         });
         it('Function body length', () => {
-            expect(functionElements).to.have.lengthOf(3);
+            expect(functionElements).to.have.lengthOf(2);
         });
         it('If Line', () => {
-            expect(functionElements[1]).to.deep.equal(expectedAssignmentX);
-            expect(functionElements[2]).to.deep.equal(expectedAssignmentY);
+            expect(functionElements[0]).to.deep.equal(expectedAssignmentX);
+            expect(functionElements[1]).to.deep.equal(expectedAssignmentY);
         });
     });
     describe('Two assignment, assignment of binary expression', () => {
@@ -39,11 +39,11 @@ describe.skip('Loop Tests' , () => {
             functionElements = lineBody;
         });
         it('Function body length', () => {
-            expect(functionElements).to.have.lengthOf(3);
+            expect(functionElements).to.have.lengthOf(2);
         });
         it('If Line', () => {
-            expect(functionElements[1]).to.deep.equal(expectedAssignmentX);
-            expect(functionElements[2]).to.deep.equal(expectedAssignmentZ);
+            expect(functionElements[0]).to.deep.equal(expectedAssignmentX);
+            expect(functionElements[1]).to.deep.equal(expectedAssignmentZ);
         });
     });
 });
