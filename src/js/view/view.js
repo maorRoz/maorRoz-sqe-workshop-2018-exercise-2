@@ -28,18 +28,20 @@ const codeTextToSpanClosingScope = (identationLevel = 0) => {
 const codeTextToSpanBody = (object, identationLevel) => object.lineBody
     .forEach(element => codeTextToSpan(element, identationLevel));
 
-const codeTextToSpanTest = (objectPrefix, object, identationLevel) => {
+const codeTextToSpanTest = (objectPrefix, object, identationLevel, toColor = true) => {
     const objectText = `${objectPrefix}(${object.lineCondition}){`;
     const newSpan = $('<span id=\'codeLine\'/>');
     newSpan.css('margin-left',  `${identationLevel * 10}px`);
-    const testColor = object.conditionColor === 'green' ? '#7FFF00' : '#DC143C';
-    newSpan.css('background-color', testColor);
+    if(toColor){
+        const testColor = object.conditionColor === 'green' ? '#7FFF00' : '#DC143C';
+        newSpan.css('background-color', testColor);
+    }
     newSpan.text(objectText);
     outputBox.append(newSpan);
 };
 
 const whileCodeTextToSpan = (whileObject, identationLevel) => {
-    codeTextToSpanTest('while', whileObject, identationLevel);
+    codeTextToSpanTest('while', whileObject, identationLevel, false);
 
     codeTextToSpanBody(whileObject, identationLevel + 1);
 
@@ -50,8 +52,6 @@ const elseCodeTextToSpan = (elseObject, identationLevel) => {
     const elseText = 'else {';
     const newSpan = $('<span id=\'codeLine\'/>');
     newSpan.css('margin-left',  `${identationLevel * 10}px`);
-    const testColor = elseObject.conditionColor === 'green' ? '#7FFF00' : '#DC143C';
-    newSpan.css('background-color', testColor);
     newSpan.text(elseText);
     outputBox.append(newSpan);
 

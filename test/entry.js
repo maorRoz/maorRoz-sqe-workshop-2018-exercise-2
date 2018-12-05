@@ -5,3 +5,5 @@ import './functions.test';
 import './while.test';
 import './return.test';
 import './variables.test';
+import './valueExtractor.test';
+import './elementsTableController.test';

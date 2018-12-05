@@ -61,7 +61,7 @@ const expressionBodyTabler = (objectStatements) => {
     const { type, body } = objectStatements;
     if(type !== 'BlockStatement'){
         const newElement = elementTabler(objectStatements);
-        return newElement.length ? newElement : [ newElement ];
+        return newElement.length ? newElement : [newElement];
     }
 
     const elementsBody = [];
@@ -91,6 +91,7 @@ const elementTabler = (object) =>
 const bodyTabler = (parsedCodeBody) => parsedCodeBody.length > 0 ? elementTabler(parsedCodeBody[0]) : null;
 
 export const createMethodAndArguments = (parsedCode) => {
+    functionTableModel = undefined;
     const { body } = parsedCode;
     bodyTabler(body);
     return functionTableModel;

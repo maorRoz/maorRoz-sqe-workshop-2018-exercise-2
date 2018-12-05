@@ -3,7 +3,7 @@ import Line from './Line';
 const type = 'functionDeclaration';
 
 export default class FunctionLine extends Line{
-    constructor(object, body, parameters = []){
+    constructor(object, body, parameters){
         const { name} = object.id;
         super(type);
         this.parameters = parameters;

@@ -12,14 +12,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/maorRoz/sqhw1.git"
+    "url": "git+https://github.com/maorRoz/maorroz-sqe-workshop-2018-exercise-2.git"
   },
   "author": "Maor Rozevich",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/maorRoz/sqhw1/issues"
+    "url": "https://github.com/maorRoz/maorroz-sqe-workshop-2018-exercise-2/issues"
   },
-  "homepage": "https://github.com/maorRoz/sqhw1#readme",
+  "nyc":{
+    "include": [
+      "src"
+    ]
+  },
+  "homepage": "https://github.com/maorRoz/maorroz-sqe-workshop-2018-exercise-2#readme",
   "devDependencies": {
     "chai": "^4.2.0",
     "cross-env": "^5.2.0",
