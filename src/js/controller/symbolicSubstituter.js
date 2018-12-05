@@ -80,7 +80,7 @@ const handleBody = (body, locals) => {
             locals = extendedLocals;
             newAssignment ? submittedBody.push(newAssignment) : null;
         } else {
-            const methodCodeToSubtitute = typeCodeToSubtitute[type] || (() => null);
+            const methodCodeToSubtitute = typeCodeToSubtitute[type];
             submittedBody.push(methodCodeToSubtitute(statement, locals));
         }
     });

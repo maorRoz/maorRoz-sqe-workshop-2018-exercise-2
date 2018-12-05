@@ -178,8 +178,14 @@ describe('symbolicSubtituter Tests', () => {
         });
     });
 
-    describe('while + if + return', () => {
+    it('while + if + return', () => {
+        const expectedReturn = createExpectedReturnStatement('(x)');
+        const expectedIf = createExpectedIfStatement('(x)<0', [expectedReturn], null);
+        const expectedWhile = createExpectedWhileStatement('(x)<5',[expectedIf]);
+        const expectedFunction = createExpectedFunction('hello',['x'], [expectedWhile]);
 
+        const testFunction = makeTestableSubstitutedFunction('function hello(x){\nlet i = x;\nwhile(i < 5){\nif(i < 0){\nreturn i\n}\ni = i + 1;\n}\n}');
+        expect(testFunction).to.deep.equal(expectedFunction);
     });
 
 });
