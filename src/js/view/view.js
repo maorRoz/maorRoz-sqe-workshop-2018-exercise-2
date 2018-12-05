@@ -102,7 +102,7 @@ const createFunctionSpans = () =>{
 };
 
 
-const createOutputFunction = (givenOutputBox ) => {
+const createOutputFunction = (givenOutputBox) => {
     outputBox = givenOutputBox;
     createFunctionSpans();
 };

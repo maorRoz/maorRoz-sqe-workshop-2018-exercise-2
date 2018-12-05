@@ -1,9 +1,21 @@
 import { parseCode } from './code-analyzer';
 import { createMethodAndArguments } from './controller/elementsTableController';
+import { symbolicSubstitution } from './controller/symbolicSubstituter';
+import toEvalParsedMethod from './controller/evaluator';
 
 export const makeTestableFunction = (code) => {
     const parsedCode = parseCode(code);
     return createMethodAndArguments(parsedCode);
+};
+
+export const makeTestableSubstitutedFunction = (code) => {
+    const testableFunction = makeTestableFunction(code);
+    return symbolicSubstitution(testableFunction);
+};
+
+export const makeTestableEvaluatedFunction = (code, parameters) => {
+    const testableSubtitutedFunction = makeTestableSubstitutedFunction(code);
+    return toEvalParsedMethod(testableSubtitutedFunction, parameters);
 };
 
 const createExpectedObject = (objectProperties) =>
