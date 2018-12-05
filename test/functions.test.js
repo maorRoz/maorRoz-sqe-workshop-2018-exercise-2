@@ -12,7 +12,7 @@ describe('Function Tests' , () => {
         it('Function body length', () => {
             expect(testFunction.lineBody).to.have.lengthOf(0);
         });
-        it.only('Function', () => {
+        it('Function', () => {
             const expectedFunctionLine = createExpectedFunction('hello');
             expect(testFunction).to.deep.equal(expectedFunctionLine);
         });
