@@ -3,7 +3,7 @@ import {parseCode} from './code-analyzer';
 import { createMethodAndArguments } from './controller/elementsTableController'; 
 import { symbolicSubstitution } from './controller/symbolicSubstituter';
 import toEvalParsedMethod from './controller/evaluator';
-import  createOutputFunction from '../view';
+import  createOutputFunction from './view/view';
 
 const argumentsTextIntoValues = () => {
     const argumentsText = $('#argumentsLine').val().split(',');

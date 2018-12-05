@@ -1,6 +1,6 @@
 /* eslint-disable max-lines-per-function */
 import { expect } from 'chai';
-import {makeTestableFunction, createExpectedWhileStatement, createExpectedReturnStatement } from '../src/js/util-test';
+import {makeTestableFunction, createExpectedWhileStatement, createExpectedReturnStatement, createExpectedAssignmentStatement } from '../src/js/util-test';
 
 describe('Loop Tests' , () => {
     let functionElements;

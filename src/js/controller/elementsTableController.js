@@ -60,8 +60,7 @@ const functionTabler = (functionObject) => {
 const expressionBodyTabler = (objectStatements) => {
     const { type, body } = objectStatements;
     if(type !== 'BlockStatement'){
-        const newElement = elementTabler(objectStatements);
-        return newElement.length ? newElement : [newElement];
+        return [elementTabler(objectStatements)];
     }
 
     const elementsBody = [];
