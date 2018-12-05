@@ -131,7 +131,7 @@ describe('symbolicSubtituter Tests', () => {
             });
         });
 
-        it.only('if and 2 else if and else', () => {
+        it('if and 2 else if and else', () => {
             const expectedReturn1 = createExpectedReturnStatement('((((x)+((x)+5))+(5))+0)');
             const expectedElse = createExpectedElseStatement([expectedReturn1]);
             const expectedReturn2 = createExpectedReturnStatement('(5)');
@@ -160,7 +160,22 @@ describe('symbolicSubtituter Tests', () => {
     });
 
     describe('while', () => {
+        it('no assignments', () => {
+            const expectedAssignmentStatement = createExpectedAssignmentStatement('x','x+1');
+            const expectedWhile = createExpectedWhileStatement('x<5',[expectedAssignmentStatement]);
+            const expectedFunction = createExpectedFunction('hello',['x'], [expectedWhile]);
 
+            const testFunction = makeTestableSubstitutedFunction('function hello(x){\nwhile(x < 5){\n x = x + 1;\n}\n}');
+            expect(testFunction).to.deep.equal(expectedFunction);
+        });
+
+        it('with assignments', () => {
+            const expectedWhile = createExpectedWhileStatement('(x)<5');
+            const expectedFunction = createExpectedFunction('hello',['x'], [expectedWhile]);
+
+            const testFunction = makeTestableSubstitutedFunction('function hello(x){\nlet i = x;\nwhile(i < 5){\n i = i + 1;\n}\n}');
+            expect(testFunction).to.deep.equal(expectedFunction);
+        });
     });
 
     describe('while + if + return', () => {
