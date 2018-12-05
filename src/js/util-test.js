@@ -8,18 +8,21 @@ export const makeTestableFunction = (code) => {
 
 const createExpectedObject = (objectProperties) =>
 {
-   const { lineType, lineName='', lineCondition='', lineValue='', lineBody=[], alternate } = objectProperties;
-   const testObject = { lineType, lineName, lineCondition, lineValue, lineBody};
+    const { lineType, lineName='', lineCondition='', lineValue='', lineBody=[], alternate } = objectProperties;
+    const testObject = { lineType, lineName, lineCondition, lineValue, lineBody};
    
     if(lineType === 'ifStatement' || lineType === 'elseIfStatement'){
         testObject.alternate = alternate;
     }
 
     return testObject;
-}
+};
 
-export const createExpectedFunction = (lineName, lineBody) => 
-    createExpectedObject({ lineType: 'functionDeclaration', lineName, lineBody });
+export const createExpectedFunction = (lineName, parameters=[], lineBody) => {
+    const expectedFunction = createExpectedObject({ lineType: 'functionDeclaration', lineName, lineBody });
+    expectedFunction.parameters = parameters;
+    return expectedFunction;
+}
 
 export const createExpectedReturnStatement = (lineValue) => 
     createExpectedObject({ lineType: 'returnStatement', lineValue });

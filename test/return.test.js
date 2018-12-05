@@ -6,8 +6,8 @@ describe('Return Tests' , () => {
     let functionElements;
     describe('Return literal', () => {
         beforeEach(() => {
-           const { lineBody } = makeTestableFunction('function hello(){\nreturn 5;\n}');
-           functionElements = lineBody;
+            const { lineBody } = makeTestableFunction('function hello(){\nreturn 5;\n}');
+            functionElements = lineBody;
         });
         it('Function body length', () => {
             expect(functionElements).to.have.lengthOf(1);

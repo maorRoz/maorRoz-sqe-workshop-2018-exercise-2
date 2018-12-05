@@ -2,49 +2,47 @@
 import { expect } from 'chai';
 import {makeTestableFunction, createExpectedFunction } from '../src/js/util-test';
 
-describe.skip('Function Tests' , () => {
-    let testedElementTable;
-    let functionElements;
+describe('Function Tests' , () => {
+    let testFunction;
+
     describe('Function with no arguments', () => {
         beforeEach(() => {
-            const { lineBody } = makeTestableFunction('function hello(){}');
-            functionElements = testedElementTable.elementRows;
+            testFunction = makeTestableFunction('function hello(){}');
         });
         it('Function body length', () => {
-            expect(functionElements).to.have.lengthOf(1);
+            expect(testFunction.lineBody).to.have.lengthOf(0);
         });
-        it('Function Line', () => {
+        it.only('Function', () => {
             const expectedFunctionLine = createExpectedFunction('hello');
-            expect(functionElements[0]).to.deep.equal(expectedFunctionLine);
+            expect(testFunction).to.deep.equal(expectedFunctionLine);
         });
     });
 
     describe('Function Arguments', () => {
-     //   const expectedVariableLineN = createExpectedAssignmentStatement('n');
-     //   const expectedVariableLineM = createExpectedAssignmentStatement('m');
         describe('Function with one argument', () => {
             beforeEach(() => {
-       //          const { lineBody } = makeTestableFunction('function hello(n){}');
-        //         functionElements = lineBody;
+                testFunction = makeTestableFunction('function hello(n){}');
             });
             it('Function body length', () => {
-                expect(functionElements).to.have.lengthOf(2);
+                expect(testFunction.lineBody).to.have.lengthOf(0);
             });
-            it('Variable Line', () => {
-                expect(functionElements[1]).to.deep.equal(expectedVariableLineN);
+            it('Function', () => {
+                const parameters = ['n'];
+                const expectedFunctionLine = createExpectedFunction('hello', parameters);
+                expect(testFunction).to.deep.equal(expectedFunctionLine);
             });
         });
         describe('Function with two arguments', () => {
             beforeEach(() => {
-                const { lineBody } = makeTestableFunction('function hello(n,m){}');
-                functionElements = lineBody;
+                testFunction = makeTestableFunction('function hello(n,m){}');
             });
             it('Function body length', () => {
-                expect(functionElements).to.have.lengthOf(3);
+                expect(testFunction.lineBody).to.have.lengthOf(0);
             });
-            it('Variable Line', () => {
-                expect(functionElements[1]).to.deep.equal(expectedVariableLineN);
-                expect(functionElements[2]).to.deep.equal(expectedVariableLineM);
+            it('Function', () => {
+                const parameters = ['n','m'];
+                const expectedFunctionLine = createExpectedFunction('hello', parameters);
+                expect(testFunction).to.deep.equal(expectedFunctionLine);
             });
         });
     });
