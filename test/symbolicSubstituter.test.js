@@ -131,19 +131,31 @@ describe('symbolicSubtituter Tests', () => {
             });
         });
 
-        it.skip('if and 2 else if and else', () => {
-            const expectedReturn1 = createExpectedReturnStatement('((x)+5)');
-            const expectedElseIf = createExpectedElseIfStatement('x===2', [expectedReturn1], null);
-            const expectedReturn2 = createExpectedReturnStatement('(x)');
-            const expectedIf = createExpectedIfStatement('x===1',[expectedReturn2], expectedElseIf);
+        it.only('if and 2 else if and else', () => {
+            const expectedReturn1 = createExpectedReturnStatement('((((x)+((x)+5))+(5))+0)');
+            const expectedElse = createExpectedElseStatement([expectedReturn1]);
+            const expectedReturn2 = createExpectedReturnStatement('(5)');
+            const expectedElseIf1 = createExpectedElseIfStatement('x===3', [expectedReturn2], expectedElse);
+            const expectedReturn3 = createExpectedReturnStatement('((x)+5)');
+            const expectedElseIf2 = createExpectedElseIfStatement('x===2', [expectedReturn3], expectedElseIf1);
+            const expectedReturn4 = createExpectedReturnStatement('(x)');
+            const expectedIf = createExpectedIfStatement('x===1',[expectedReturn4], expectedElseIf2);
             const expectedFunction = createExpectedFunction('hello',['x'], [expectedIf]);
 
-            const testFunction = makeTestableSubstitutedFunction('function hello(x){\nlet y = x;\nlet z = y + 5;\nif(x === 1){\n return y;\n} else if(x === 2){\nreturn z\n}\n}');
+            const testFunction = makeTestableSubstitutedFunction('function hello(x){\nlet y = x;\nlet z = y + 5; let m = 5; let n = y + z + m + 0\nif(x === 1){\n return y;\n} else if(x === 2){\nreturn z\n} else if(x === 3){\nreturn m\n} else {\nreturn n\n}\n}');
+            
             expect(testFunction).to.deep.equal(expectedFunction);
         });
 
-        describe('if inside if', () => {
+        it('if inside if', () => {
+            const expectedReturn1 = createExpectedReturnStatement('((x)+5)');
+            const expectedIf1 = createExpectedIfStatement('x===2', [expectedReturn1], null);
+            const expectedReturn2 = createExpectedReturnStatement('(x)');
+            const expectedIf2 = createExpectedIfStatement('x===1',[expectedReturn2], null);
+            const expectedFunction = createExpectedFunction('hello',['x'], [expectedIf2, expectedIf1]);
 
+            const testFunction = makeTestableSubstitutedFunction('function hello(x){\nlet y = x;\nlet z = y + 5;\nif(x === 1){\n return y;\n}\nif(x === 2){\nreturn z\n}\n}');
+            expect(testFunction).to.deep.equal(expectedFunction);
         });
     });
 
