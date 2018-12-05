@@ -22,7 +22,7 @@ export const createExpectedFunction = (lineName, parameters=[], lineBody) => {
     const expectedFunction = createExpectedObject({ lineType: 'functionDeclaration', lineName, lineBody });
     expectedFunction.parameters = parameters;
     return expectedFunction;
-}
+};
 
 export const createExpectedReturnStatement = (lineValue) => 
     createExpectedObject({ lineType: 'returnStatement', lineValue });

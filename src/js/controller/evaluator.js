@@ -7,7 +7,7 @@ const evalCondition = (valueMapper, condition) => {
     return result ? 'green' : 'red';
 
 
-}
+};
 
 const toEvalObject = (valueMapper, object, negativePreviousCondition) => {
     const { lineCondition, lineBody, alternate } = object;
@@ -16,7 +16,7 @@ const toEvalObject = (valueMapper, object, negativePreviousCondition) => {
     object.lineBody = lineBody.length > 0 ? toEvalBody(valueMapper, lineBody) : []; 
     object.alternate = alternate ? toEvalObject(valueMapper, alternate, `!(${condition})`) : undefined;
     return object; 
-}
+};
 
 const toEvalBody = (valueMapper, body) => body.map(statement => toEvalObject(valueMapper, statement));
 
@@ -25,7 +25,7 @@ const toEvalParsedMethod = (argumentsValues) => {
     const valueMapper = method.parameters
         .map((parameter, index) => ({name: parameter, value: argumentsValues[index]}));
     method.lineBody = toEvalBody(valueMapper, method.lineBody); 
-}
+};
 
 
 export default toEvalParsedMethod;

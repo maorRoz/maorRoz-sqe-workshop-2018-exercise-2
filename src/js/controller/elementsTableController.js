@@ -23,7 +23,7 @@ const whileStatementTabler = (whileStatement) => {
     const whileBody = expressionBodyTabler(whileStatement.body);
     const whileLine = new WhileLine(whileStatement, whileBody);
     return whileLine;
-}
+};
 
 const alternateTabler = (alternate) => {
     if(!alternate) return;
@@ -88,7 +88,7 @@ const elementTabler = (object) =>
     return methodType ? methodType(object) : null;
 };
 
-const bodyTabler = (parsedCodeBody) => parsedCodeBody.length > 0 ? elementTabler(parsedCodeBody[0]) : null
+const bodyTabler = (parsedCodeBody) => parsedCodeBody.length > 0 ? elementTabler(parsedCodeBody[0]) : null;
 
 export const createMethodAndArguments = (parsedCode) => {
     const { body } = parsedCode;

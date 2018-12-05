@@ -8,8 +8,8 @@ cache: yarn
 
 script:
   - yarn install
-  - yarn test
   - yarn coverage
+  - yarn lint
 
 notifications:
   email:

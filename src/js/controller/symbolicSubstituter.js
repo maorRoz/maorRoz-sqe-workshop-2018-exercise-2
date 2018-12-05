@@ -6,18 +6,18 @@ const handleElse = (elseStatement, locals) => {
     elseStatement.lineBody = handleBody(lineBody, locals);
 
     return elseStatement;
-}
+};
 
 const subtituteExpression = (expression, locals) => {
-    const variables = expression.split(/>|<|!==|==|===|[()+-/*]/)
+    const variables = expression.split(/>|<|!==|==|===|[()+-/*]/);
     variables.forEach(variable => {
         const existLocal = locals.find(local => local.name === variable);
         expression = existLocal ? expression
             .replace(new RegExp(variable, 'g'), `(${existLocal.value})`) : expression;
-    })
+    });
 
     return expression;
-}
+};
 
 const handleAssignment = (assignment, locals) => {
     const extendedLocals = locals.filter(local => local.name !== assignment.lineName);
@@ -28,14 +28,14 @@ const handleAssignment = (assignment, locals) => {
 
     const toSubmit = globals.includes(assignment.lineName);
     return { extendedLocals, newAssignment: toSubmit? assignment : null };
-}
+};
 
 const handleReturn = (returnStatemnt, locals) => {
     const { lineValue } = returnStatemnt;
     returnStatemnt.lineValue = subtituteExpression(lineValue, locals);
 
     return returnStatemnt;
-}
+};
 
 const testExpressionToSubstitute = (testExpression, locals) => subtituteExpression(testExpression, locals);
 
@@ -46,12 +46,12 @@ const handleWhile = (whileStatement, locals) => {
     
     whileStatement.lineBody = handleBody(lineBody, locals);
 
-     return whileStatement;
-}
+    return whileStatement;
+};
 
 const handleAlternate = (alternate, locals) => {
     return alternate.lineType === 'elseStatement' ? handleElse(alternate, locals) : handleIf(alternate, locals);
-}
+};
 
 const handleIf = (ifStatement, locals) => {
     const { lineCondition, lineBody, alternate } = ifStatement;
@@ -63,13 +63,13 @@ const handleIf = (ifStatement, locals) => {
     ifStatement.alternate = alternate? handleAlternate(alternate, locals): null;
 
     return ifStatement;
-}
+};
 
 const typeCodeToSubtitute = {
     ifStatement: handleIf,
     whileStatement: handleWhile,
     returnStatement: handleReturn
-}
+};
 
 const handleBody = (body, locals) => {
     const submittedBody = [];
@@ -81,13 +81,13 @@ const handleBody = (body, locals) => {
             newAssignment ? submittedBody.push(newAssignment) : null;
         } else {
             const methodCodeToSubtitute = typeCodeToSubtitute[type] || (() => null);
-            submittedBody.push(methodCodeToSubtitute(statement, locals))
+            submittedBody.push(methodCodeToSubtitute(statement, locals));
         }
     });
 
     return submittedBody;
 
-}
+};
 
 export const symbolicSubstitution = (method) => {
     const locals = [];
