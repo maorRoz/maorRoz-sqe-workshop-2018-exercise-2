@@ -190,11 +190,27 @@ describe('symbolicSubtituter Tests', () => {
 
     describe('Examples', () => {
         it('Example1', () => {
+            const expectedReturn1 = createExpectedReturnStatement('((x+y)+z)+(((0)+z)+5)');
+            const expectedElse = createExpectedElseStatement([expectedReturn1]);
+            const expectedReturn2 = createExpectedReturnStatement('((x+y)+z)+(((0)+x)+5)');
+            const expectedElseIf = createExpectedElseIfStatement('((x+1)+y)<(z*2)', [expectedReturn2], expectedElse);
+            const expectedReturn3 = createExpectedReturnStatement('((x+y)+z)+((0)+5)');
+            const expectedIf = createExpectedIfStatement('((x+1)+y)<z',[expectedReturn3], expectedElseIf);
+            const expectedFunction = createExpectedFunction('foo',['x','y','z'], [expectedIf]);
 
+            const testFunction = makeTestableSubstitutedFunction('function foo(x,y,z){\nlet a = x + 1;\nlet b = a + y;\nlet c = 0;\n\nif(b < z){\nc = c + 5;\n return x + y + z + c;\n}\nelse if(b < z * 2){\nc = c + x + 5;\nreturn x + y + z + c\n} else {\nc = c + z + 5;\nreturn x + y + z + c;\n}\n}');
+            expect(testFunction).to.deep.equal(expectedFunction);
         });
 
         it('Example2', () => {
 
+            const expectedReturn = createExpectedReturnStatement('z');
+            const expectedAssignment = createExpectedAssignmentStatement('z','((x+1)+((x+1)+y))*2');
+            const expectedWhile = createExpectedWhileStatement('(x+1)<z',[expectedAssignment]);
+            const expectedFunction = createExpectedFunction('foo',['x','y','z'], [expectedWhile, expectedReturn]);
+
+            const testFunction = makeTestableSubstitutedFunction('function foo(x,y,z){\nlet a = x + 1;\nlet b = a + y;\nlet c = 0;\n\nwhile(x + 1 < z){\nc = a + b;\nz = c * 2;\n}\n\n return z;\n}');
+            expect(testFunction).to.deep.equal(expectedFunction);
         });
     });
 
