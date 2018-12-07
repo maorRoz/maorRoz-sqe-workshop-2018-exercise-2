@@ -19,12 +19,33 @@ const subtituteExpression = (expression, locals) => {
     return expression;
 };
 
+const modifyLocalArray = (local, index, value) => {
+    const arrayWithNoBrackets = local.value.replace(/\[|\]/g,'');
+    const arrayValues = arrayWithNoBrackets.split(',');
+    arrayValues[index] = value;
+    local.value = `[${arrayValues.join()}]`;
+    return local;
+};
+
+const newLocalCreation = (assignment, locals) => {
+    if(assignment.lineName.includes('[')){
+        const nameWithoutArrayIndex = assignment.lineName.replace(/\[.*\]/g,'');
+        const indexWithoutName = assignment.lineName.replace(/.*\[|\]/g, '');
+        const evaluatedIndex = JSON.parse(subtituteExpression(indexWithoutName, locals));
+        const local = locals.find(local => local.name === nameWithoutArrayIndex);
+        const modifiedLocalArray = modifyLocalArray(local, evaluatedIndex, assignment.lineValue);
+        return modifiedLocalArray ;
+    }
+    return { name: assignment.lineName, value: assignment.lineValue };
+};
+
 const handleAssignment = (assignment, locals) => {
-    const extendedLocals = locals.filter(local => local.name !== assignment.lineName);
+    const extendedLocals = locals.filter(local => local.name !== assignment.lineName && local.name !== assignment.lineName.replace(/\[.*\]/g,''));
 
     const subtitutedExpression = subtituteExpression(assignment.lineValue, locals);
     assignment.lineValue = subtitutedExpression;
-    extendedLocals.push({ name: assignment.lineName, value: assignment.lineValue });
+    const newLocal = newLocalCreation(assignment, locals);
+    extendedLocals.push(newLocal);
 
     const toSubmit = globals.includes(assignment.lineName);
     return { extendedLocals, newAssignment: toSubmit? assignment : null };

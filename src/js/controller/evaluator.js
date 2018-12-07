@@ -1,7 +1,10 @@
 /* eslint-disable complexity */
 const evalCondition = (valueMapper, condition) => {
     let toEvalCondition = condition;
-    valueMapper.forEach(entry => toEvalCondition = toEvalCondition.replace(new RegExp(entry.name, 'g'), entry.value));
+    valueMapper.forEach(entry => {
+        const valueToReplace = Array.isArray(entry.value) ? `[${entry.value.join()}]` : entry.value;
+        toEvalCondition = toEvalCondition.replace(new RegExp(entry.name, 'g'), valueToReplace);
+    });
     const result = eval(toEvalCondition);
     return result ? 'green' : 'red';
 
