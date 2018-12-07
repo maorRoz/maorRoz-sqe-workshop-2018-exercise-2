@@ -37,23 +37,81 @@ describe('Evaluator Tests', () => {
 
     describe('If Eval', () => {
         describe('only If', () => {
+            it('If is green', () =>{
 
+            });
+
+            it('If is red', () => {
+
+            });
         });
 
         describe('If and Else If', () =>{
+            it('If is green', () => {
 
+            });
+
+            it('Else If is green', () => {
+
+            });
+
+            it('Both green', () => {
+
+            });
+
+            it('None Green', () => {
+
+            });
         });
 
         describe('If and Else', () => {
+            it('If is green', () =>{
 
+            });
+
+            it('If is red', () => {
+
+            });
         });
 
         describe('If and 2 Else If and Else', () => {
+            it('If is green', () => {
 
+            });
+
+            it('First Else If is green', () => {
+
+            });
+
+            it('Second Else If is green', () => {
+
+            });
+
+            it('Both green', () => {
+
+            });
+
+            it('None Green', () => {
+
+            });
         });
 
         describe('If inside If', () => {
+            it('Wrapper If is green only', () =>{
 
+            });
+
+            it('Inner If is green only', () => {
+
+            });
+
+            it('Both Green', () => {
+
+            });
+
+            it('None Green', () => {
+
+            });
         });
     });
 
