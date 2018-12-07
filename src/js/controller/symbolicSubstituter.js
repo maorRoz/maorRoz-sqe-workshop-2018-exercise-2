@@ -9,7 +9,7 @@ const handleElse = (elseStatement, locals) => {
 };
 
 const subtituteExpression = (expression, locals) => {
-    const variables = expression.split(/>|<|!==|==|===|[()+-/*]/);
+    const variables = expression.split(/>|<|!==|===|==|]|[[()+-/*]/);
     variables.forEach(variable => {
         const existLocal = locals.find(local => local.name === variable);
         expression = existLocal ? expression

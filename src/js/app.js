@@ -6,7 +6,7 @@ import toEvalParsedMethod from './controller/evaluator';
 import  createOutputFunction from './view/view';
 
 const argumentsTextIntoValues = () => {
-    const argumentsText = $('#argumentsLine').val().split(',');
+    const argumentsText = $('#argumentsLine').val().split(/(?![^)(]*\([^)(]*?\)\)),(?![^[]*\])/);
     return argumentsText.map(argument => argument.length > 0 ?  JSON.parse(`"${argument}"`) : '');
 };
 
