@@ -7,7 +7,16 @@ import  createOutputFunction from './view/view';
 
 const argumentsTextIntoValues = () => {
     const argumentsText = $('#argumentsLine').val().split(/(?![^)(]*\([^)(]*?\)\)),(?![^[]*\])/);
-    return argumentsText.map(argument => argument.length > 0 ?  JSON.parse(`"${argument}"`) : '');
+    return argumentsText.map(argument => {
+        if(argument.length > 0){
+            switch(argument[0]){
+            case '"':
+            case '\'': return argument;
+            default: return JSON.parse(argument);
+            }
+        }
+        return '';
+    });
 };
 
 $(document).ready(function () {
