@@ -30,12 +30,18 @@ const assignmentExpressionExtractValue = (expression, parenthesis) => {
     return parenthesis ? `(${assignmentValue})` : assignmentValue;
 };
 
+const arrayExpressionExtractValue = (expression) => {
+    const { elements } = expression;
+    return `[${elements.map(element => extractValue(element)).join()}]`;
+};
+
 const valueTypesMethods = {
     UnaryExpression: unaryExpressionExtractValue,
     BinaryExpression: binaryExpressionExtractValue,
     MemberExpression: memberExpressionExtractValue,
     UpdateExpression: updateExpressionExtractValue,
     AssignmentExpression: assignmentExpressionExtractValue,
+    ArrayExpression: arrayExpressionExtractValue,
     Identifier: (expression) => expression.name,
     Literal: (expression) => expression.raw
 };
