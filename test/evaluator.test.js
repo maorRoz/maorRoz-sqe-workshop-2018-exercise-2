@@ -12,7 +12,7 @@ describe('Evaluator Tests', () => {
     });
 
     it('Assignment Eval', () => {
-        const testFunction = makeTestableEvaluatedFunction('function hello(x){\nlet z = x;\n}', 1);
+        const testFunction = makeTestableEvaluatedFunction('function hello(x){\nlet z = x;\n}', [1]);
 
         const expectedFunction = createExpectedFunction('hello',['x']);
         expect(testFunction).to.deep.equal(expectedFunction);
@@ -22,7 +22,7 @@ describe('Evaluator Tests', () => {
         const expectedReturn = createExpectedReturnStatement('(x)');
         const expectedFunction = createExpectedFunction('hello',['x'], [expectedReturn]);
 
-        const testFunction = makeTestableEvaluatedFunction('function hello(x){\nlet z = x;\nreturn z;\n}', 1);
+        const testFunction = makeTestableEvaluatedFunction('function hello(x){\nlet z = x;\nreturn z;\n}', [1]);
         
         expect(testFunction).to.deep.equal(expectedFunction);
     });
@@ -31,7 +31,7 @@ describe('Evaluator Tests', () => {
         const expectedWhile = createExpectedWhileStatement('(x)<5');
         const expectedFunction = createExpectedFunction('hello',['x'], [expectedWhile]);
 
-        const testFunction = makeTestableEvaluatedFunction('function hello(x){\nlet i = x;\nwhile(i < 5){\n i = i + 1;\n}\n}', 1);
+        const testFunction = makeTestableEvaluatedFunction('function hello(x){\nlet i = x;\nwhile(i < 5){\n i = i + 1;\n}\n}', [1]);
         expect(testFunction).to.deep.equal(expectedFunction);
     });
 
@@ -115,13 +115,16 @@ describe('Evaluator Tests', () => {
         });
     });
 
-    describe('Examples', () => {
-        it('Example1', () => {
+    it('Examples', () => {
+        const expectedReturn1 = createExpectedReturnStatement('((x+y)+z)+(((0)+z)+5)');
+        const expectedElse = createExpectedElseStatement([expectedReturn1]);
+        const expectedReturn2 = createExpectedReturnStatement('((x+y)+z)+(((0)+x)+5)');
+        const expectedElseIf = createExpectedElseIfStatement('((x+1)+y)<(z*2)', [expectedReturn2], expectedElse, 'green');
+        const expectedReturn3 = createExpectedReturnStatement('((x+y)+z)+((0)+5)');
+        const expectedIf = createExpectedIfStatement('((x+1)+y)<z',[expectedReturn3], expectedElseIf, 'red');
+        const expectedFunction = createExpectedFunction('foo',['x','y','z'], [expectedIf]);
 
-        });
-
-        it('Example2', () => {
-
-        });
+        const testFunction = makeTestableEvaluatedFunction('function foo(x,y,z){\nlet a = x + 1;\nlet b = a + y;\nlet c = 0;\n\nif(b < z){\nc = c + 5;\n return x + y + z + c;\n}\nelse if(b < z * 2){\nc = c + x + 5;\nreturn x + y + z + c\n} else {\nc = c + z + 5;\nreturn x + y + z + c;\n}\n}',[1,2,3]);
+        expect(testFunction).to.deep.equal(expectedFunction);
     });
 });
