@@ -37,7 +37,7 @@ const valueTypesMethods = {
     UpdateExpression: updateExpressionExtractValue,
     AssignmentExpression: assignmentExpressionExtractValue,
     Identifier: (expression) => expression.name,
-    Literal: (expression) => expression.value.toString()
+    Literal: (expression) => expression.raw
 };
 
 export const extractValue = (expression, parenthesis = false) => {

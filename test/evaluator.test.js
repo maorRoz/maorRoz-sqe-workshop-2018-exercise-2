@@ -38,11 +38,21 @@ describe('Evaluator Tests', () => {
     describe('If Eval', () => {
         describe('only If', () => {
             it('If is green', () =>{
-
+                const expectedReturn = createExpectedReturnStatement('(x)');
+                const expectedIf = createExpectedIfStatement('x===true',[expectedReturn], null, 'green');
+                const expectedFunction = createExpectedFunction('hello',['x'], [expectedIf]);
+    
+                const testFunction = makeTestableEvaluatedFunction('function hello(x){\nlet y = x;\nif(x === true){\n return y;\n}\n}',[true]);
+                expect(testFunction).to.deep.equal(expectedFunction);
             });
 
             it('If is red', () => {
-
+                const expectedReturn = createExpectedReturnStatement('(x)');
+                const expectedIf = createExpectedIfStatement('x===\'good\'',[expectedReturn], null, 'red');
+                const expectedFunction = createExpectedFunction('hello',['x'], [expectedIf]);
+        
+                const testFunction = makeTestableEvaluatedFunction('function hello(x){\nlet y = x;\nif(x === \'good\'){\n return y;\n}\n}',['"not good"']);
+                expect(testFunction).to.deep.equal(expectedFunction);
             });
         });
 
