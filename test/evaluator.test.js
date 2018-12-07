@@ -1,6 +1,6 @@
 /* eslint-disable max-lines-per-function */
 import { expect } from 'chai';
-import {makeTestableEvaluatedFunction, createExpectedFunction, createExpectedIfStatement, createExpectedWhileStatement, createExpectedAssignmentStatement, createExpectedReturnStatement, createExpectedElseIfStatement, createExpectedElseStatement } from '../src/js/util-test';
+import {makeTestableEvaluatedFunction, createExpectedFunction, createExpectedIfStatement, createExpectedWhileStatement, createExpectedReturnStatement, createExpectedElseIfStatement, createExpectedElseStatement } from '../src/js/util-test';
 
 
 describe('Evaluator Tests', () => {
@@ -69,65 +69,179 @@ describe('Evaluator Tests', () => {
             });
 
             it('Else If is green', () => {
-
+                const expectedReturn1 = createExpectedReturnStatement('(x)[1]');
+                const expectedElseIf = createExpectedElseIfStatement('(x)[1]===\'world\'',[expectedReturn1], null, 'green');
+                const expectedReturn2 = createExpectedReturnStatement('(x)[0]');
+                const expectedIf = createExpectedIfStatement('(x)[0]===\'hello\'',[expectedReturn2], expectedElseIf, 'red');
+                const expectedFunction = createExpectedFunction('hello',['x'], [expectedIf]);
+        
+                const testFunction = makeTestableEvaluatedFunction('function hello(x){\nlet y = x;\nif(y[0] === \'hello\'){\n return y[0];\n} else if(y[1] === \'world\'){\nreturn y[1];\n}\n}',['["not","world"]']);
+                expect(testFunction).to.deep.equal(expectedFunction);
             });
 
             it('Both green', () => {
-
+                const expectedReturn1 = createExpectedReturnStatement('(x)[1]');
+                const expectedElseIf = createExpectedElseIfStatement('(x)[1]===\'world\'',[expectedReturn1], null, 'green');
+                const expectedReturn2 = createExpectedReturnStatement('(x)[0]');
+                const expectedIf = createExpectedIfStatement('(x)[0]===\'hello\'',[expectedReturn2], expectedElseIf, 'green');
+                const expectedFunction = createExpectedFunction('hello',['x'], [expectedIf]);
+        
+                const testFunction = makeTestableEvaluatedFunction('function hello(x){\nlet y = x;\nif(y[0] === \'hello\'){\n return y[0];\n} else if(y[1] === \'world\'){\nreturn y[1];\n}\n}',['["hello","world"]']);
+                expect(testFunction).to.deep.equal(expectedFunction);
             });
 
             it('None Green', () => {
-
+                const expectedReturn1 = createExpectedReturnStatement('(x)[1]');
+                const expectedElseIf = createExpectedElseIfStatement('(x)[1]===\'world\'',[expectedReturn1], null, 'red');
+                const expectedReturn2 = createExpectedReturnStatement('(x)[0]');
+                const expectedIf = createExpectedIfStatement('(x)[0]===\'hello\'',[expectedReturn2], expectedElseIf, 'red');
+                const expectedFunction = createExpectedFunction('hello',['x'], [expectedIf]);
+        
+                const testFunction = makeTestableEvaluatedFunction('function hello(x){\nlet y = x;\nif(y[0] === \'hello\'){\n return y[0];\n} else if(y[1] === \'world\'){\nreturn y[1];\n}\n}',['["not","not"]']);
+                expect(testFunction).to.deep.equal(expectedFunction);
             });
         });
 
         describe('If and Else', () => {
             it('If is green', () =>{
-
+                const expectedReturn1 = createExpectedReturnStatement('(x)');
+                const expectedElse = createExpectedElseStatement([expectedReturn1]);
+                const expectedReturn2 = createExpectedReturnStatement('(x)[0]');
+                const expectedIf = createExpectedIfStatement('(x)[0]===\'hello\'',[expectedReturn2], expectedElse, 'green');
+                const expectedFunction = createExpectedFunction('hello',['x'], [expectedIf]);
+        
+                const testFunction = makeTestableEvaluatedFunction('function hello(x){\nlet y = x;\nif(y[0] === \'hello\'){\n return y[0];\n} else {\nreturn y;\n}\n}',['["hello"]']);
+                expect(testFunction).to.deep.equal(expectedFunction);
             });
 
             it('If is red', () => {
-
+                const expectedReturn1 = createExpectedReturnStatement('(x)');
+                const expectedElse = createExpectedElseStatement([expectedReturn1]);
+                const expectedReturn2 = createExpectedReturnStatement('(x)[0]');
+                const expectedIf = createExpectedIfStatement('(x)[0]===\'hello\'',[expectedReturn2], expectedElse, 'red');
+                const expectedFunction = createExpectedFunction('hello',['x'], [expectedIf]);
+        
+                const testFunction = makeTestableEvaluatedFunction('function hello(x){\nlet y = x;\nif(y[0] === \'hello\'){\n return y[0];\n} else {\nreturn y;\n}\n}',['["not"]']);
+                expect(testFunction).to.deep.equal(expectedFunction);
             });
         });
 
         describe('If and 2 Else If and Else', () => {
             it('If is green', () => {
-
+                const expectedReturn1 = createExpectedReturnStatement('(x)');
+                const expectedElse = createExpectedElseStatement([expectedReturn1]);
+                const expectedReturn2 = createExpectedReturnStatement('(x)[2]');
+                const expectedElseIf1 = createExpectedElseIfStatement('(x)[2]===5',[expectedReturn2], expectedElse, 'red');
+                const expectedReturn3 = createExpectedReturnStatement('(x)[1]');
+                const expectedElseIf2 = createExpectedElseIfStatement('(x)[1]===\'world\'',[expectedReturn3], expectedElseIf1, 'red');
+                const expectedReturn4 = createExpectedReturnStatement('(x)[0]');
+                const expectedIf = createExpectedIfStatement('(x)[0]===\'hello\'',[expectedReturn4], expectedElseIf2, 'green');
+                const expectedFunction = createExpectedFunction('hello',['x'], [expectedIf]);
+        
+                const testFunction = makeTestableEvaluatedFunction('function hello(x){\nlet y = x;\nif(y[0] === \'hello\'){\n return y[0];\n} else if(y[1] === \'world\'){\nreturn y[1];\n} else if(y[2] === 5){\n return y[2];\n} else {\nreturn y;\n}\n}',['["hello","not",6,true]']);
+                expect(testFunction).to.deep.equal(expectedFunction);
             });
 
             it('First Else If is green', () => {
-
+                const expectedReturn1 = createExpectedReturnStatement('(x)');
+                const expectedElse = createExpectedElseStatement([expectedReturn1]);
+                const expectedReturn2 = createExpectedReturnStatement('(x)[2]');
+                const expectedElseIf1 = createExpectedElseIfStatement('(x)[2]===5',[expectedReturn2], expectedElse, 'red');
+                const expectedReturn3 = createExpectedReturnStatement('(x)[1]');
+                const expectedElseIf2 = createExpectedElseIfStatement('(x)[1]===\'world\'',[expectedReturn3], expectedElseIf1, 'green');
+                const expectedReturn4 = createExpectedReturnStatement('(x)[0]');
+                const expectedIf = createExpectedIfStatement('(x)[0]===\'hello\'',[expectedReturn4], expectedElseIf2, 'red');
+                const expectedFunction = createExpectedFunction('hello',['x'], [expectedIf]);
+        
+                const testFunction = makeTestableEvaluatedFunction('function hello(x){\nlet y = x;\nif(y[0] === \'hello\'){\n return y[0];\n} else if(y[1] === \'world\'){\nreturn y[1];\n} else if(y[2] === 5){\n return y[2];\n} else {\nreturn y;\n}\n}',['["not","world",6,true]']);
+                expect(testFunction).to.deep.equal(expectedFunction);
             });
 
             it('Second Else If is green', () => {
-
+                const expectedReturn1 = createExpectedReturnStatement('(x)');
+                const expectedElse = createExpectedElseStatement([expectedReturn1]);
+                const expectedReturn2 = createExpectedReturnStatement('(x)[2]');
+                const expectedElseIf1 = createExpectedElseIfStatement('(x)[2]===5',[expectedReturn2], expectedElse, 'green');
+                const expectedReturn3 = createExpectedReturnStatement('(x)[1]');
+                const expectedElseIf2 = createExpectedElseIfStatement('(x)[1]===\'world\'',[expectedReturn3], expectedElseIf1, 'red');
+                const expectedReturn4 = createExpectedReturnStatement('(x)[0]');
+                const expectedIf = createExpectedIfStatement('(x)[0]===\'hello\'',[expectedReturn4], expectedElseIf2, 'red');
+                const expectedFunction = createExpectedFunction('hello',['x'], [expectedIf]);
+        
+                const testFunction = makeTestableEvaluatedFunction('function hello(x){\nlet y = x;\nif(y[0] === \'hello\'){\n return y[0];\n} else if(y[1] === \'world\'){\nreturn y[1];\n} else if(y[2] === 5){\n return y[2];\n} else {\nreturn y;\n}\n}',['["not","not",5,true]']);
+                expect(testFunction).to.deep.equal(expectedFunction);
             });
 
-            it('Both green', () => {
-
+            it('All green', () => {
+                const expectedReturn1 = createExpectedReturnStatement('(x)');
+                const expectedElse = createExpectedElseStatement([expectedReturn1]);
+                const expectedReturn2 = createExpectedReturnStatement('(x)[2]');
+                const expectedElseIf1 = createExpectedElseIfStatement('(x)[2]===5',[expectedReturn2], expectedElse, 'green');
+                const expectedReturn3 = createExpectedReturnStatement('(x)[1]');
+                const expectedElseIf2 = createExpectedElseIfStatement('(x)[1]===\'world\'',[expectedReturn3], expectedElseIf1, 'green');
+                const expectedReturn4 = createExpectedReturnStatement('(x)[0]');
+                const expectedIf = createExpectedIfStatement('(x)[0]===\'hello\'',[expectedReturn4], expectedElseIf2, 'green');
+                const expectedFunction = createExpectedFunction('hello',['x'], [expectedIf]);
+        
+                const testFunction = makeTestableEvaluatedFunction('function hello(x){\nlet y = x;\nif(y[0] === \'hello\'){\n return y[0];\n} else if(y[1] === \'world\'){\nreturn y[1];\n} else if(y[2] === 5){\n return y[2];\n} else {\nreturn y;\n}\n}',['["hello","world",5,true]']);
+                expect(testFunction).to.deep.equal(expectedFunction);
             });
 
             it('None Green', () => {
-
+                const expectedReturn1 = createExpectedReturnStatement('(x)');
+                const expectedElse = createExpectedElseStatement([expectedReturn1]);
+                const expectedReturn2 = createExpectedReturnStatement('(x)[2]');
+                const expectedElseIf1 = createExpectedElseIfStatement('(x)[2]===5',[expectedReturn2], expectedElse, 'red');
+                const expectedReturn3 = createExpectedReturnStatement('(x)[1]');
+                const expectedElseIf2 = createExpectedElseIfStatement('(x)[1]===\'world\'',[expectedReturn3], expectedElseIf1, 'red');
+                const expectedReturn4 = createExpectedReturnStatement('(x)[0]');
+                const expectedIf = createExpectedIfStatement('(x)[0]===\'hello\'',[expectedReturn4], expectedElseIf2, 'red');
+                const expectedFunction = createExpectedFunction('hello',['x'], [expectedIf]);
+        
+                const testFunction = makeTestableEvaluatedFunction('function hello(x){\nlet y = x;\nif(y[0] === \'hello\'){\n return y[0];\n} else if(y[1] === \'world\'){\nreturn y[1];\n} else if(y[2] === 5){\n return y[2];\n} else {\nreturn y;\n}\n}',['["not","not",false,true]']);
+                expect(testFunction).to.deep.equal(expectedFunction);
             });
         });
 
         describe('If inside If', () => {
             it('Wrapper If is green only', () =>{
-
+                const expectedReturn = createExpectedReturnStatement('(x)[1]');
+                const expectedInnerIf = createExpectedIfStatement('(x)[1]===\'world\'',[expectedReturn], null, 'red');
+                const expectedIf = createExpectedIfStatement('(x)[0]===\'hello\'',[expectedInnerIf], null, 'green');
+                const expectedFunction = createExpectedFunction('hello',['x'], [expectedIf]);
+        
+                const testFunction = makeTestableEvaluatedFunction('function hello(x){\nlet y = x;\nif(y[0] === \'hello\'){\n if(y[1] === \'world\'){\nreturn y[1];\n}\n}\n}',['["hello","not"]']);
+                expect(testFunction).to.deep.equal(expectedFunction);
             });
 
             it('Inner If is green only', () => {
-
+                const expectedReturn = createExpectedReturnStatement('(x)[1]');
+                const expectedInnerIf = createExpectedIfStatement('(x)[1]===\'world\'',[expectedReturn], null, 'green');
+                const expectedIf = createExpectedIfStatement('(x)[0]===\'hello\'',[expectedInnerIf], null, 'red');
+                const expectedFunction = createExpectedFunction('hello',['x'], [expectedIf]);
+        
+                const testFunction = makeTestableEvaluatedFunction('function hello(x){\nlet y = x;\nif(y[0] === \'hello\'){\n if(y[1] === \'world\'){\nreturn y[1];\n}\n}\n}',['["not","world"]']);
+                expect(testFunction).to.deep.equal(expectedFunction);
             });
 
             it('Both Green', () => {
-
+                const expectedReturn = createExpectedReturnStatement('(x)[1]');
+                const expectedInnerIf = createExpectedIfStatement('(x)[1]===\'world\'',[expectedReturn], null, 'green');
+                const expectedIf = createExpectedIfStatement('(x)[0]===\'hello\'',[expectedInnerIf], null, 'green');
+                const expectedFunction = createExpectedFunction('hello',['x'], [expectedIf]);
+        
+                const testFunction = makeTestableEvaluatedFunction('function hello(x){\nlet y = x;\nif(y[0] === \'hello\'){\n if(y[1] === \'world\'){\nreturn y[1];\n}\n}\n}',['["hello","world"]']);
+                expect(testFunction).to.deep.equal(expectedFunction);
             });
 
             it('None Green', () => {
-
+                const expectedReturn = createExpectedReturnStatement('(x)[1]');
+                const expectedInnerIf = createExpectedIfStatement('(x)[1]===\'world\'',[expectedReturn], null, 'red');
+                const expectedIf = createExpectedIfStatement('(x)[0]===\'hello\'',[expectedInnerIf], null, 'red');
+                const expectedFunction = createExpectedFunction('hello',['x'], [expectedIf]);
+        
+                const testFunction = makeTestableEvaluatedFunction('function hello(x){\nlet y = x;\nif(y[0] === \'hello\'){\n if(y[1] === \'world\'){\nreturn y[1];\n}\n}\n}',['["not","not"]']);
+                expect(testFunction).to.deep.equal(expectedFunction);
             });
         });
     });
