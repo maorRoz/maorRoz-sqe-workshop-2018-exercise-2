@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 const evalCondition = (valueMapper, condition) => {
     let toEvalCondition = condition;
     valueMapper.forEach(entry => toEvalCondition = toEvalCondition.replace(new RegExp(entry.name, 'g'), entry.value));
@@ -8,10 +9,11 @@ const evalCondition = (valueMapper, condition) => {
 };
 
 const toEvalObject = (valueMapper, object) => {
-    const { lineCondition : condition, lineBody, alternate } = object;
-    object.conditionColor = condition ? evalCondition(valueMapper, condition) : undefined;
+    const { lineType, lineCondition : condition, lineBody, alternate } = object;
+    const isIf = lineType === 'ifStatement' || lineType === 'elseIfStatement';
+    object.conditionColor = (isIf && condition) ? evalCondition(valueMapper, condition) : object.conditionColor;
     object.lineBody = lineBody.length > 0 ? toEvalBody(valueMapper, lineBody) : []; 
-    object.alternate = alternate ? toEvalObject(valueMapper, alternate) : undefined;
+    object.alternate = alternate ? toEvalObject(valueMapper, alternate) : object.alternate;
     return object; 
 };
 

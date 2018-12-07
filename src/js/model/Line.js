@@ -5,6 +5,8 @@ export default class Line {
         this.lineCondition = '';
         this.lineValue = '';
         this.lineBody = [];
+        this.conditionColor = undefined;
+        this.alternate = undefined;
     }
 
 }

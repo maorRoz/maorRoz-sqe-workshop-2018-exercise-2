@@ -20,14 +20,8 @@ export const makeTestableEvaluatedFunction = (code, parameters) => {
 
 const createExpectedObject = (objectProperties) =>
 {
-    const { lineType, lineName='', lineCondition='', lineValue='', lineBody=[], alternate } = objectProperties;
-    const testObject = { lineType, lineName, lineCondition, lineValue, lineBody};
-   
-    if(lineType === 'ifStatement' || lineType === 'elseIfStatement'){
-        testObject.alternate = alternate;
-    }
-
-    return testObject;
+    const { lineType, lineName='', lineCondition='', lineValue='', lineBody=[], alternate, conditionColor } = objectProperties;
+    return { lineType, lineName, lineCondition, lineValue, lineBody,alternate, conditionColor};
 };
 
 export const createExpectedFunction = (lineName, parameters=[], lineBody) => {
@@ -39,11 +33,11 @@ export const createExpectedFunction = (lineName, parameters=[], lineBody) => {
 export const createExpectedReturnStatement = (lineValue) => 
     createExpectedObject({ lineType: 'returnStatement', lineValue });
 
-export const createExpectedIfStatement = (lineCondition, lineBody, alternate) => 
-    createExpectedObject({ lineType: 'ifStatement', lineCondition, lineBody, alternate });
+export const createExpectedIfStatement = (lineCondition, lineBody, alternate, conditionColor) => 
+    createExpectedObject({ lineType: 'ifStatement', lineCondition, lineBody, alternate, conditionColor });
 
-export const createExpectedElseIfStatement = (lineCondition, lineBody, alternate) => 
-    createExpectedObject({ lineType: 'elseIfStatement', lineCondition, lineBody, alternate });
+export const createExpectedElseIfStatement = (lineCondition, lineBody, alternate, conditionColor) => 
+    createExpectedObject({ lineType: 'elseIfStatement', lineCondition, lineBody, alternate, conditionColor });
 
 export const createExpectedElseStatement = (lineBody) =>  
     createExpectedObject({ lineType: 'elseStatement', lineBody });

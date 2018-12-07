@@ -188,4 +188,14 @@ describe('symbolicSubtituter Tests', () => {
         expect(testFunction).to.deep.equal(expectedFunction);
     });
 
+    describe('Examples', () => {
+        it('Example1', () => {
+
+        });
+
+        it('Example2', () => {
+
+        });
+    });
+
 });
