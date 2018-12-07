@@ -1,5 +1,3 @@
-
-
 const evalCondition = (valueMapper, condition) => {
     let toEvalCondition = condition;
     valueMapper.forEach(entry => toEvalCondition = toEvalCondition.replace(new RegExp(entry.name, 'g'), entry.value));
@@ -9,12 +7,11 @@ const evalCondition = (valueMapper, condition) => {
 
 };
 
-const toEvalObject = (valueMapper, object, negativePreviousCondition) => {
-    const { lineCondition, lineBody, alternate } = object;
-    const condition = lineCondition || negativePreviousCondition;
+const toEvalObject = (valueMapper, object) => {
+    const { lineCondition : condition, lineBody, alternate } = object;
     object.conditionColor = condition ? evalCondition(valueMapper, condition) : undefined;
     object.lineBody = lineBody.length > 0 ? toEvalBody(valueMapper, lineBody) : []; 
-    object.alternate = alternate ? toEvalObject(valueMapper, alternate, `!(${condition})`) : undefined;
+    object.alternate = alternate ? toEvalObject(valueMapper, alternate) : undefined;
     return object; 
 };
 
