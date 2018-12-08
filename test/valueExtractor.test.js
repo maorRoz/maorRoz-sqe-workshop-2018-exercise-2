@@ -79,6 +79,17 @@ describe('Value Extractor Tests', () => {
         });
     });
 
+    it('ArrayExpression', () => {
+        const arrayExpression = { type: 'ArrayExpression', elements: [
+            { type: 'Identifier', name: 'id'},
+            {type: 'Literal', raw: '13'},
+            {type: 'Literal', raw: '15'}
+
+        ]};
+        const stringResult = extractValue(arrayExpression);
+        expect(stringResult).to.equal('[id,13,15]');
+    });
+
 
 
     it('Identifier', () => {
